@@ -1,13 +1,15 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = process.env.TABLE_NAME;
 
-export const handler = async (event) => {
+exports.handler = async (event) => {
   try {
-    const libraryData = JSON.parse(event.body);
+
+    const libraryData = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+
     await dynamo.send(
       new PutCommand({
         TableName: tableName,
