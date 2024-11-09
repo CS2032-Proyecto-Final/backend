@@ -1,0 +1,80 @@
+org: ginodaza
+service: api-books
+
+provider:
+  name: aws
+  runtime: python3.12
+  memorySize: 1024
+  timeout: 30
+  iam:
+    role: ${env:LAB_ROLE_ARN}
+  environment:
+    TABLE_NAME: t_books
+
+functions:
+  createBook:
+    handler: CreateBook.lambda_handler
+    events:
+      - http:
+          path: /books
+          method: post
+          cors: true
+          integration: lambda
+
+  readBooks:
+    handler: ReadBooks.lambda_handler
+    events:
+      - http:
+          path: /books
+          method: get
+          cors: true
+          integration: lambda
+
+resources:
+  Resources:
+    TablaLibros:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: isbn
+            AttributeType: S
+          - AttributeName: title
+            AttributeType: S
+          - AttributeName: author_name
+            AttributeType: S
+          - AttributeName: author_lastname
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: isbn
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: title-index
+            KeySchema:
+              - AttributeName: tenant_id
+                KeyType: HASH
+              - AttributeName: title
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: author_name-index
+            KeySchema:
+              - AttributeName: tenant_id
+                KeyType: HASH
+              - AttributeName: author_name
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: author_lastname-index
+            KeySchema:
+              - AttributeName: tenant_id
+                KeyType: HASH
+              - AttributeName: author_lastname
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST

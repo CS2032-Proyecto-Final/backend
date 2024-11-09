@@ -1,0 +1,47 @@
+org: # nombre de la organizacion que usaremos
+service: api-usuarios
+
+provider:
+  name: aws
+  runtime: python3.12
+  memorySize: 512
+  timeout: 30
+  iam:
+    role: # añadir el labRole
+
+functions:
+  buscar_usuario:
+    handler: BuscarUsuario.lambda_handler
+    events:
+      - http:
+          path: /usuarios/buscar
+          method: get
+          cors: true
+          integration: lambda
+
+  crear_usuario:
+    handler: CrearUsuario.lambda_handler
+    events:
+      - http:
+          path: /usuarios/crear
+          method: post
+          cors: true
+          integration: lambda
+
+  eliminar_usuario:
+    handler: EliminarUsuario.lambda_handler
+    events:
+      - http:
+          path: /usuarios/eliminar
+          method: delete
+          cors: true
+          integration: lambda
+
+  login_usuario:
+    handler: LoginUsuario.lambda_handler
+    events:
+      - http:
+          path: /usuarios/login
+          method: post
+          cors: true
+          integration: lambda
