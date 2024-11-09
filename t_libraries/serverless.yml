@@ -1,0 +1,49 @@
+org: ginodaza
+service: api-libraries
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 1024
+  timeout: 30
+  iam:
+    role: ${env:LAB_ROLE_ARN}
+  environment:
+    TABLE_NAME: t_libraries
+
+functions:
+  createLibrary:
+    handler: createLibrary.handler
+    events:
+      - http:
+          path: /libraries
+          method: post
+          cors: true
+          integration: lambda
+
+  getLibraryInfo:
+    handler: getLibraryInfo.handler
+    events:
+      - http:
+          path: /libraries/info
+          method: get
+          cors: true
+          integration: lambda
+          request:
+            parameters:
+              querystrings:
+                email: true
+
+resources:
+  Resources:
+    TablaLibraries:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
