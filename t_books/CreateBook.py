@@ -2,6 +2,7 @@ import boto3
 import os
 
 def lambda_handler(event, context):
+    
     # Entrada desde el evento
     tenant_id = event['body']['tenant_id']
     isbn = event['body']['isbn']
