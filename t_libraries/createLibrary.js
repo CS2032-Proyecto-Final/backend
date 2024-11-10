@@ -15,7 +15,7 @@ exports.handler = async (event) => {
         TableName: tableName,
         Item: {
           tenant_id: libraryData.tenant_id,
-          suffix_email: libraryData.suffix_email,
+          email_suffix: libraryData.email_suffix,
           reserv_time: libraryData.reserv_time,
           reserv_environ_time: libraryData.reserv_environ_time,
           color: libraryData.color,
