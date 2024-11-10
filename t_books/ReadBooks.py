@@ -2,11 +2,11 @@ import boto3
 import os
 from boto3.dynamodb.conditions import Key
 
-def lambda_handler(event, context):
+def lambda_handler(event):
     # Obtener parámetros de entrada
     tenant_id = event['query']['tenant_id']
     page = int(event['query']['page'])
-    limit = 5
+    limit = 10
 
     # Conexión a DynamoDB
     dynamodb = boto3.resource('dynamodb')

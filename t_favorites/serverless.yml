@@ -1,0 +1,59 @@
+org: ginodaza
+service: api-favorites
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 1024
+  timeout: 30
+  iam:
+    role: ${env:LAB_ROLE_ARN}
+  environment:
+    FAVORITES_TABLE_NAME: t_favorites
+
+functions:
+  addOrUpdateFavorite:
+    handler: AddOrUpdateFavorite.handler
+    events:
+      - http:
+          path: /favorite
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            parameters:
+              querystrings:
+                tenant_id: true
+                email: true
+
+  getFavorites:
+    handler: GetFavorites.handler
+    events:
+      - http:
+          path: /favorite/my
+          method: get
+          cors: true
+          integration: lambda
+          request:
+            parameters:
+              querystrings:
+                tenant_id: true
+                email: true
+
+resources:
+  Resources:
+    FavoritesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.FAVORITES_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: email#isbn
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: email#isbn
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
