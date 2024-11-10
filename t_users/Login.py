@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     email = body['email']
     password = body['password']
 
-    api_url = f"https://api-endpoint/libraries/info?email={email}"
+    api_url = f"https://utei02iz7b.execute-api.us-east-1.amazonaws.com/dev/libraries/info?email={email}"
 
     with urllib.request.urlopen(api_url) as response:
         tenant_info_response = response.read().decode()
