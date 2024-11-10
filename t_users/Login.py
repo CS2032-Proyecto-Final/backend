@@ -2,7 +2,7 @@ import boto3
 import os
 import hashlib
 import uuid
-import requests
+import urllib.request
 from datetime import datetime, timedelta
 import json
 
@@ -14,16 +14,13 @@ def lambda_handler(event, context):
     email = body['email']
     password = body['password']
 
-    tenant_info_response = requests.get(f"https://7faisqhco0.execute-api.us-east-1.amazonaws.com/dev/libraries/info?email={email}")
+    api_url = f"https://api-endpoint/libraries/info?email={email}"
 
-    if tenant_info_response.status_code != 200:
-            return {
-                'statusCode': 404,
-                'body': json.dumps({'error': 'Tenant no encontrado'})
-            }
+    with urllib.request.urlopen(api_url) as response:
+        tenant_info_response = response.read().decode()
+        tenant_info_outer = json.loads(tenant_info_response)
+        tenant_info = json.loads(tenant_info_outer["body"])
 
-    tenant_info_outer = tenant_info_response.json()
-    tenant_info = json.loads(tenant_info_outer["body"])
     tenant_id = tenant_info.get('tenant_id')
 
     if not tenant_id:
