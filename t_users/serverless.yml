@@ -1,9 +1,13 @@
-service: user-management-service
+org: ginodaza
+service: api-libraries
 
 provider:
   name: aws
-  runtime: python3.8
-  region: us-east-1
+  runtime: python3.12
+  memorySize: 1024
+  timeout: 30
+  iam:
+    role: ${env:LAB_ROLE_ARN}
   environment:
     USERS_TABLE_NAME: t_usuario
     CODES_TABLE_NAME: codes_table
@@ -16,6 +20,8 @@ functions:
       - http:
           path: codes/create
           method: get
+          cors: true
+          integration: lambda
 
   GetCodes:
     handler: GetCodes.lambda_handler
@@ -23,6 +29,8 @@ functions:
       - http:
           path: codes
           method: get
+          cors: true
+          integration: lambda
 
   CreateUser:
     handler: CreateUser.lambda_handler
@@ -30,6 +38,8 @@ functions:
       - http:
           path: users/create
           method: post
+          cors: true
+          integration: lambda
 
   Login:
     handler: Login.lambda_handler
@@ -37,6 +47,8 @@ functions:
       - http:
           path: login
           method: post
+          cors: true
+          integration: lambda
 
   ValidateToken:
     handler: ValidateToken.lambda_handler
@@ -44,6 +56,8 @@ functions:
       - http:
           path: validate-token
           method: get
+          cors: true
+          integration: lambda
 
 resources:
   Resources:
