@@ -2,6 +2,7 @@ import boto3
 import os
 import hashlib
 import uuid
+import requests
 from datetime import datetime, timedelta
 import json
 
@@ -12,7 +13,24 @@ def lambda_handler(event, context):
     body = event['body']
     email = body['email']
     password = body['password']
-    tenant_id = body['tenant_id']
+
+    tenant_info_response = requests.get(f"https://7faisqhco0.execute-api.us-east-1.amazonaws.com/dev/libraries/info?email={email}")
+
+    if tenant_info_response.status_code != 200:
+            return {
+                'statusCode': 404,
+                'body': json.dumps({'error': 'Tenant no encontrado'})
+            }
+
+    tenant_info_outer = tenant_info_response.json()
+    tenant_info = json.loads(tenant_info_outer["body"])
+    tenant_id = tenant_info.get('tenant_id')
+
+    if not tenant_id:
+        return {
+            'statusCode': 400,
+            'body': json.dumps({'error': 'Tenant ID no encontrado en la respuesta'})
+        }
     
     hashed_password = hash_password(password)
     
@@ -56,6 +74,7 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps({
             'message': 'Login exitoso',
-            'token': token
+            'token': token,
+            'tenant_info': tenant_info
         })
     }
