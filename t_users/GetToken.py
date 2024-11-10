@@ -3,6 +3,8 @@ import os
 from datetime import datetime
 
 def lambda_handler(event):
+    #NO USADO
+
     tenant_id = event['query']['tenant_id']
     table_name = os.environ["CODES_TABLE_NAME"]
 

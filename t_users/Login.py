@@ -8,10 +8,11 @@ def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def lambda_handler(event):
-    body = json.loads(event['body'])
+    body = event['body']
     email = body['email']
     password = body['password']
-    tenant_id = email.split('@')[1].split('.')[0]
+    tenant_id = body['tenant_id']
+    
     hashed_password = hash_password(password)
     
     dynamodb = boto3.resource('dynamodb')
@@ -28,14 +29,14 @@ def lambda_handler(event):
     if 'Item' not in response:
         return {
             'statusCode': 403,
-            'body': json.dumps({'error': 'Usuario no existe'})
+            'body': json.dumps({'error': 'Usuario y/o contraseña incorrectos'})
         }
     
     stored_hashed_password = response['Item']['password']
     if hashed_password != stored_hashed_password:
         return {
             'statusCode': 403,
-            'body': json.dumps({'error': 'Password incorrecto'})
+            'body': json.dumps({'error': 'Usuario y/o contraseña incorrectos'})
         }
 
     token = str(uuid.uuid4())
@@ -54,7 +55,6 @@ def lambda_handler(event):
         'statusCode': 200,
         'body': json.dumps({
             'message': 'Login exitoso',
-            'token': token,
-            'expires': expiration_date
+            'token': token
         })
     }

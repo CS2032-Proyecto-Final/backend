@@ -4,8 +4,10 @@ import uuid
 from datetime import datetime, timedelta
 
 def lambda_handler(event):
+    #NO USADO
+
     tenant_id = event['body']['tenant_id']
-    table_name = os.environ["CODES_TABLE_NAME"]
+    table_name = os.environ["TOKENS_TABLE_NAME"]
 
     token = str(uuid.uuid4())
     expiration_date = (datetime.now() + timedelta(hours=24)).isoformat()

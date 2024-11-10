@@ -10,33 +10,15 @@ provider:
     role: ${env:LAB_ROLE_ARN}
   environment:
     USERS_TABLE_NAME: t_usuario
-    CODES_TABLE_NAME: codes_table
-    TOKENS_TABLE_NAME: t_tokens_acceso
+    CODES_TABLE_NAME: t_codes
+    TOKENS_TABLE_NAME: t_tokens
 
 functions:
-  CreateCode:
-    handler: CreateCode.lambda_handler
+  RegisterUser:
+    handler: RegisterUser.lambda_handler
     events:
       - http:
-          path: codes/create
-          method: get
-          cors: true
-          integration: lambda
-
-  GetCodes:
-    handler: GetCodes.lambda_handler
-    events:
-      - http:
-          path: codes
-          method: get
-          cors: true
-          integration: lambda
-
-  CreateUser:
-    handler: CreateUser.lambda_handler
-    events:
-      - http:
-          path: users/create
+          path: auth/register
           method: post
           cors: true
           integration: lambda
@@ -45,7 +27,7 @@ functions:
     handler: Login.lambda_handler
     events:
       - http:
-          path: login
+          path: auth/login
           method: post
           cors: true
           integration: lambda
@@ -54,8 +36,8 @@ functions:
     handler: ValidateToken.lambda_handler
     events:
       - http:
-          path: validate-token
-          method: get
+          path: tokens/validate
+          method: post
           cors: true
           integration: lambda
 
