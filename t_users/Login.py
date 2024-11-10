@@ -1,4 +1,5 @@
 import boto3
+import os
 import hashlib
 import uuid
 from datetime import datetime, timedelta
@@ -16,8 +17,8 @@ def lambda_handler(event, context):
     hashed_password = hash_password(password)
     
     dynamodb = boto3.resource('dynamodb')
-    users_table = dynamodb.Table('t_usuario')
-    tokens_table = dynamodb.Table('t_tokens_acceso')
+    users_table = dynamodb.Table(os.environ['USERS_TABLE_NAME'])
+    tokens_table = dynamodb.Table(os.environ['TOKENS_TABLE_NAME'])
     
     response = users_table.get_item(
         Key={
