@@ -7,7 +7,7 @@ import json
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def lambda_handler(event, context):
+def lambda_handler(event):
     body = json.loads(event['body'])
     email = body['email']
     password = body['password']

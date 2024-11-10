@@ -3,9 +3,9 @@ import os
 from datetime import datetime
 import json
 
-def lambda_handler(event, context):
-    token = event['queryStringParameters']['token']
-    tenant_id = event['queryStringParameters']['tenant_id']
+def lambda_handler(event):
+    token = event['query']['token']
+    tenant_id = event['query']['tenant_id']
     
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ['TOKENS_TABLE_NAME'])

@@ -7,8 +7,8 @@ from datetime import datetime
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def lambda_handler(event, context):
-    body = json.loads(event['body'])
+def lambda_handler(event):
+    body = event['body']
     email = body['email']
     password = body['password']
     code = body['code']

@@ -1,5 +1,5 @@
 org: ginodaza
-service: api-libraries
+service: api-users
 
 provider:
   name: aws

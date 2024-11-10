@@ -3,8 +3,8 @@ import os
 import uuid
 from datetime import datetime, timedelta
 
-def lambda_handler(event, context):
-    tenant_id = event['queryStringParameters']['tenant_id']
+def lambda_handler(event):
+    tenant_id = event['body']['tenant_id']
     table_name = os.environ["CODES_TABLE_NAME"]
 
     token = str(uuid.uuid4())
