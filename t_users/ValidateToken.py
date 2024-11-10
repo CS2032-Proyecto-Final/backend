@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 import json
 
-def lambda_handler(event):
+def lambda_handler(event, context):
     body = event['body']
     token = body['token']
     tenant_id = body['tenant_id']

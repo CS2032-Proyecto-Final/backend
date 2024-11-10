@@ -7,7 +7,7 @@ from datetime import datetime
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def lambda_handler(event):
+def lambda_handler(event, context):
 
     # Todo lo relacionado a code no se si implementarlo
     body = event['body']
