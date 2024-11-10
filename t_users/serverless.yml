@@ -1,47 +1,96 @@
-org: # nombre de la organizacion que usaremos
-service: api-usuarios
+service: user-management-service
 
 provider:
   name: aws
-  runtime: python3.12
-  memorySize: 512
-  timeout: 30
-  iam:
-    role: # añadir el labRole
+  runtime: python3.8
+  region: us-east-1
+  environment:
+    USERS_TABLE_NAME: t_usuario
+    CODES_TABLE_NAME: codes_table
+    TOKENS_TABLE_NAME: t_tokens_acceso
 
 functions:
-  buscar_usuario:
-    handler: BuscarUsuario.lambda_handler
+  CreateCode:
+    handler: CreateCode.lambda_handler
     events:
       - http:
-          path: /usuarios/buscar
+          path: codes/create
           method: get
-          cors: true
-          integration: lambda
 
-  crear_usuario:
-    handler: CrearUsuario.lambda_handler
+  GetCodes:
+    handler: GetCodes.lambda_handler
     events:
       - http:
-          path: /usuarios/crear
+          path: codes
+          method: get
+
+  CreateUser:
+    handler: CreateUser.lambda_handler
+    events:
+      - http:
+          path: users/create
           method: post
-          cors: true
-          integration: lambda
 
-  eliminar_usuario:
-    handler: EliminarUsuario.lambda_handler
+  Login:
+    handler: Login.lambda_handler
     events:
       - http:
-          path: /usuarios/eliminar
-          method: delete
-          cors: true
-          integration: lambda
-
-  login_usuario:
-    handler: LoginUsuario.lambda_handler
-    events:
-      - http:
-          path: /usuarios/login
+          path: login
           method: post
-          cors: true
-          integration: lambda
+
+  ValidateToken:
+    handler: ValidateToken.lambda_handler
+    events:
+      - http:
+          path: validate-token
+          method: get
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.USERS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: email
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+
+    TokensTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TOKENS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: token
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: token
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+
+    CodesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.CODES_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: code
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: code
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
