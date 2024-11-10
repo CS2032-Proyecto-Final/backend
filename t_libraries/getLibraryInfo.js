@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, QueryCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, GetCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
@@ -11,19 +11,15 @@ exports.handler = async (event) => {
     const email_suffix = email.split('@')[1];
 
     const result = await dynamo.send(
-      new QueryCommand({
+      new GetCommand({
         TableName: tableName,
-        IndexName: 'email_suffix-index',
-        KeyConditionExpression: 'email_suffix = :suffix',
-        ExpressionAttributeValues: {
-          ':suffix': email_suffix,
-        },
+        Key: { email_suffix },
       })
     );
 
     return {
       statusCode: 200,
-      body: JSON.stringify(result.Items[0] || { message: "Library not found" }),
+      body: JSON.stringify(result.Item || { message: "Library not found" }),
     };
   } catch (error) {
     return {
