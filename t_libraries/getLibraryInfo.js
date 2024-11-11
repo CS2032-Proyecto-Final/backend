@@ -1,4 +1,3 @@
-
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, GetCommand } = require("@aws-sdk/lib-dynamodb");
 
@@ -9,12 +8,12 @@ const tableName = process.env.TABLE_NAME;
 exports.handler = async (event) => {
   try {
     const email = event.query.email;
-    const tenant_id = email.split('@')[1].split('.')[0];
+    const email_suffix = email.split('@')[1];
 
     const result = await dynamo.send(
       new GetCommand({
         TableName: tableName,
-        Key: { tenant_id },
+        Key: { email_suffix },
       })
     );
 

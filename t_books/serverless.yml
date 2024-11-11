@@ -9,7 +9,7 @@ provider:
   iam:
     role: ${env:LAB_ROLE_ARN}
   environment:
-    TABLE_NAME: t_books
+    TABLE_NAME: ${sls:stage}-t_books
 
 functions:
   createBook:

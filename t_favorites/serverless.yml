@@ -9,7 +9,7 @@ provider:
   iam:
     role: ${env:LAB_ROLE_ARN}
   environment:
-    FAVORITES_TABLE_NAME: t_favorites
+    FAVORITES_TABLE_NAME: ${sls:stage}-t_favorites
 
 functions:
   addOrUpdateFavorite:

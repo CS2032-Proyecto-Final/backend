@@ -2,6 +2,7 @@ import boto3
 import os
 import hashlib
 import uuid
+import urllib.request
 from datetime import datetime, timedelta
 
 def hash_password(password):
@@ -12,6 +13,21 @@ def lambda_handler(event, context):
     email = body['email']
     password = body['password']
     tenant_id = body['tenant_id']
+
+    api_url = f"https://utei02iz7b.execute-api.us-east-1.amazonaws.com/dev/libraries/info?email={email}"
+
+    # with urllib.request.urlopen(api_url) as response:
+    #     tenant_info_response = response.read().decode()
+    #     tenant_info_outer = json.loads(tenant_info_response)
+    #     tenant_info = json.loads(tenant_info_outer["body"])
+
+    # tenant_id = tenant_info.get('tenant_id')
+
+    # if not tenant_id:
+    #     return {
+    #         'statusCode': 400,
+    #         'body': json.dumps({'error': 'Tenant ID no encontrado en la respuesta'})
+    #     }
     
     hashed_password = hash_password(password)
     

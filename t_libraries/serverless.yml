@@ -9,7 +9,7 @@ provider:
   iam:
     role: ${env:LAB_ROLE_ARN}
   environment:
-    TABLE_NAME: t_libraries
+    TABLE_NAME: ${sls:stage}-t_libraries
 
 functions:
   createLibrary:
@@ -41,9 +41,9 @@ resources:
       Properties:
         TableName: ${self:provider.environment.TABLE_NAME}
         AttributeDefinitions:
-          - AttributeName: tenant_id
+          - AttributeName: email_suffix
             AttributeType: S
         KeySchema:
-          - AttributeName: tenant_id
+          - AttributeName: email_suffix
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
