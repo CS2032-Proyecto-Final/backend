@@ -7,7 +7,7 @@
     },
     "photo_url": "url-del-logo-uni",
     "reserv_book_time": 2,
-    "reserv_environ_time": 1,
+    "reserv_env_time": 1,
     "email_suffix": "uni.edu.pe"
    }
 
@@ -20,6 +20,6 @@
  },
  "photo_url": "url-del-logo",
  "reserv_book_time": 3,
- "reserv_environ_time": 2,
+ "reserv_env_time": 2,
  "email_suffix": "utec.edu.pe"
 }
