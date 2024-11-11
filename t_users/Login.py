@@ -3,6 +3,7 @@ import os
 import hashlib
 import uuid
 import urllib.request
+import json
 from datetime import datetime, timedelta
 
 def hash_password(password):
@@ -14,20 +15,10 @@ def lambda_handler(event, context):
     password = body['password']
     tenant_id = body['tenant_id']
 
-    api_url = f"https://utei02iz7b.execute-api.us-east-1.amazonaws.com/dev/libraries/info?email={email}"
+    api_url = f"https://hsoml2f154.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
 
-    # with urllib.request.urlopen(api_url) as response:
-    #     tenant_info_response = response.read().decode()
-    #     tenant_info_outer = json.loads(tenant_info_response)
-    #     tenant_info = json.loads(tenant_info_outer["body"])
-
-    # tenant_id = tenant_info.get('tenant_id')
-
-    # if not tenant_id:
-    #     return {
-    #         'statusCode': 400,
-    #         'body': json.dumps({'error': 'Tenant ID no encontrado en la respuesta'})
-    #     }
+    with urllib.request.urlopen(api_url) as response:
+        tenant_info = json.load(response)
     
     hashed_password = hash_password(password)
     
@@ -73,6 +64,7 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': {
             'message': 'Login exitoso',
-            'token': token
+            'token': token,
+            'tenant_info': tenant_info
         }
     }
