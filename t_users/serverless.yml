@@ -75,18 +75,3 @@ resources:
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
 
-    CodesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:provider.environment.CODES_TABLE_NAME}
-        AttributeDefinitions:
-          - AttributeName: tenant_id
-            AttributeType: S
-          - AttributeName: code
-            AttributeType: S
-        KeySchema:
-          - AttributeName: tenant_id
-            KeyType: HASH
-          - AttributeName: code
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST

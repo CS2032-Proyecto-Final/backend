@@ -8,11 +8,9 @@ def hash_password(password):
 
 def lambda_handler(event, context):
 
-    # Todo lo relacionado a code no se si implementarlo
     body = event['body']
     email = body['email']
     password = body['password']
-    # code = body['code']
     firstname = body['firstname']
     lastname = body['lastname']
     tenant_id = body['tenant_id']
@@ -28,21 +26,6 @@ def lambda_handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
     users_table = dynamodb.Table(os.environ['USERS_TABLE_NAME'])
-
-    # codes_table = dynamodb.Table(os.environ['CODES_TABLE_NAME'])
-
-    # code_item = codes_table.get_item(
-    #     Key={
-    #         'tenant_id': tenant_id,
-    #         'code': code
-    #     }
-    # )
-
-    # if 'Item' not in code_item or code_item['Item']['expiration_date'] <= datetime.now().isoformat():
-    #     return {
-    #         'statusCode': 400,
-    #         'body': {'error': 'Invalid or expired code'}
-    #     }
 
     user_item = users_table.get_item(
         Key={
@@ -70,13 +53,6 @@ def lambda_handler(event, context):
             'creation_date': creation_date
         }
     )
-
-    # codes_table.delete_item(
-    #     Key={
-    #         'tenant_id': tenant_id,
-    #         'code': code
-    #     }
-    # )
 
     return {
         'statusCode': 200,
