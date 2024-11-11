@@ -1,0 +1,222 @@
+[
+    {
+        "tenant_id": "uni",
+        "isbn": "978-0-07-183004-5",
+        "author_lastname": "Rizzoni",
+        "author_name": "Giorgio",
+        "pages": 1088,
+        "quantity": 18,
+        "stock": 12,
+        "title": "Principles and Applications of Electrical Engineering"
+    },
+    {
+        "tenant_id": "uni",
+        "isbn": "978-0-07-338023-0",
+        "author_lastname": "Meriam",
+        "author_name": "J.L.",
+        "pages": 752,
+        "quantity": 20,
+        "stock": 15,
+        "title": "Engineering Mechanics: Dynamics"
+    },
+    {
+        "tenant_id": "uni",
+        "isbn": "978-0-07-339827-2",
+        "author_lastname": "Beer",
+        "author_name": "Ferdinand",
+        "pages": 896,
+        "quantity": 20,
+        "stock": 18,
+        "title": "Mechanics of Materials"
+    },
+    {
+        "tenant_id": "uni",
+        "isbn": "978-0-07-340133-0",
+        "author_lastname": "Nise",
+        "author_name": "Norman S.",
+        "pages": 944,
+        "quantity": 12,
+        "stock": 8,
+        "title": "Control Systems Engineering"
+    },
+    {
+        "tenant_id": "uni",
+        "isbn": "978-0-13-607791-6",
+        "author_lastname": "Sonntag",
+        "author_name": "Richard E.",
+        "pages": 960,
+        "quantity": 18,
+        "stock": 10,
+        "title": "Fundamentals of Thermodynamics"
+    },
+    {
+        "tenant_id": "uni",
+        "isbn": "978-1-118-31088-7",
+        "author_lastname": "Moran",
+        "author_name": "Michael J.",
+        "pages": 1048,
+        "quantity": 25,
+        "stock": 12,
+        "title": "Fundamentals of Engineering Thermodynamics"
+    },
+    {
+        "tenant_id": "uni",
+        "isbn": "978-1-118-54824-2",
+        "author_lastname": "Callister",
+        "author_name": "William D.",
+        "pages": 992,
+        "quantity": 22,
+        "stock": 14,
+        "title": "Materials Science and Engineering: An Introduction"
+    },
+    {
+        "tenant_id": "uni",
+        "isbn": "978-1-292-04282-2",
+        "author_lastname": "White",
+        "author_name": "Frank M.",
+        "pages": 864,
+        "quantity": 15,
+        "stock": 10,
+        "title": "Fluid Mechanics"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-07-352332-3",
+        "author_lastname": "Silberschatz",
+        "author_name": "Abraham",
+        "pages": 1376,
+        "quantity": 14,
+        "stock": 7,
+        "title": "Database System Concepts"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-13-110362-7",
+        "author_lastname": "Kernighan",
+        "author_name": "Brian",
+        "pages": 288,
+        "quantity": 30,
+        "stock": 25,
+        "title": "The C Programming Language"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-13-235088-4",
+        "author_lastname": "Martin",
+        "author_name": "Robert",
+        "pages": 464,
+        "quantity": 25,
+        "stock": 20,
+        "title": "Clean Code"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-13-790395-5",
+        "author_lastname": "Tanenbaum",
+        "author_name": "Andrew",
+        "pages": 960,
+        "quantity": 15,
+        "stock": 10,
+        "title": "Computer Networks"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-262-03384-8",
+        "author_lastname": "Cormen",
+        "author_name": "Thomas",
+        "pages": 1312,
+        "quantity": 10,
+        "stock": 5,
+        "title": "Introduction to Algorithms"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-262-53305-8",
+        "author_lastname": "Sipser",
+        "author_name": "Michael",
+        "pages": 480,
+        "quantity": 8,
+        "stock": 6,
+        "title": "Introduction to the Theory of Computation"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-321-42868-4",
+        "author_lastname": "Russell",
+        "author_name": "Stuart",
+        "pages": 1152,
+        "quantity": 10,
+        "stock": 8,
+        "title": "Artificial Intelligence: A Modern Approach"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-470-12870-1",
+        "author_lastname": "Provost",
+        "author_name": "Foster",
+        "pages": 414,
+        "quantity": 15,
+        "stock": 10,
+        "title": "Data Science for Business"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-0-596-52068-7",
+        "author_lastname": "Lutz",
+        "author_name": "Mark",
+        "pages": 1648,
+        "quantity": 20,
+        "stock": 15,
+        "title": "Learning Python"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-1-118-89915-4",
+        "author_lastname": "Han",
+        "author_name": "Jiawei",
+        "pages": 744,
+        "quantity": 12,
+        "stock": 7,
+        "title": "Data Mining: Concepts and Techniques"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-1-449-35936-2",
+        "author_lastname": "McKinney",
+        "author_name": "Wes",
+        "pages": 544,
+        "quantity": 20,
+        "stock": 18,
+        "title": "Python for Data Analysis"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-1-491-92705-0",
+        "author_lastname": "Géron",
+        "author_name": "Aurélien",
+        "pages": 832,
+        "quantity": 12,
+        "stock": 9,
+        "title": "Hands-On Machine Learning with Scikit-Learn and TensorFlow"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-1-59327-584-6",
+        "author_lastname": "Sweigart",
+        "author_name": "Al",
+        "pages": 504,
+        "quantity": 18,
+        "stock": 12,
+        "title": "Automate the Boring Stuff with Python"
+    },
+    {
+        "tenant_id": "utec",
+        "isbn": "978-1-59327-992-9",
+        "author_lastname": "Knuth",
+        "author_name": "Donald",
+        "pages": 672,
+        "quantity": 8,
+        "stock": 3,
+        "title": "The Art of Computer Programming"
+    }
+]
