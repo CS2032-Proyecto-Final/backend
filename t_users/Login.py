@@ -19,7 +19,7 @@ def generate_token(email, tenant_id):
         "tenant_id": tenant_id,
         "email": email,
         "creation_date": datetime.now().isoformat(),
-        "exp": (datetime.now() + timedelta(hours=24)).isoformat()
+        "exp": (datetime.now() + timedelta(hours=24)).timestamp()
     }
 
     token = jwt.encode(payload=payload, key=JWT_SECRET, algorithm="HS256", headers=header)
