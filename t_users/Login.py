@@ -3,7 +3,6 @@ import os
 import hashlib
 import uuid
 from datetime import datetime, timedelta
-import json
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
@@ -30,23 +29,25 @@ def lambda_handler(event, context):
     if 'Item' not in response:
         return {
             'statusCode': 403,
-            'body': json.dumps({'error': 'Usuario y/o contraseña incorrectos'})
+            'body': {'error': 'Usuario y/o contraseña incorrectos'}
         }
     
     stored_hashed_password = response['Item']['password']
     if hashed_password != stored_hashed_password:
         return {
             'statusCode': 403,
-            'body': json.dumps({'error': 'Usuario y/o contraseña incorrectos'})
+            'body': {'error': 'Usuario y/o contraseña incorrectos'}
         }
 
     token = str(uuid.uuid4())
+    creation_date = datetime.now().isoformat()
     expiration_date = (datetime.now() + timedelta(minutes=60)).isoformat()
     
     token_item = {
         'tenant_id': tenant_id,
-        'email': email,
         'token': token,
+        'email': email,
+        'creation_date': creation_date,
         'exp_date': expiration_date
     }
     
@@ -54,8 +55,8 @@ def lambda_handler(event, context):
     
     return {
         'statusCode': 200,
-        'body': json.dumps({
+        'body': {
             'message': 'Login exitoso',
             'token': token
-        })
+        }
     }
