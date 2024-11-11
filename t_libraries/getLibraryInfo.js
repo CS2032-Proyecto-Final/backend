@@ -16,10 +16,10 @@ exports.handler = async (event) => {
       })
     );
 
-    if(!result.item){
+    if(!result.Item){
       return "tenant no encontrado";
     }
-    return result.item;
+    return result.Item;
     
   } catch (error) {
     return error;
