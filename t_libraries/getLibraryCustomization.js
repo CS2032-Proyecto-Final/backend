@@ -16,11 +16,13 @@ exports.handler = async (event) => {
       })
     );
 
-    if(!result.Item){
+    if (!result.Item) {
       return "Tenant not found";
     }
-    return result.Item;
-    
+
+    const { color, photo_url } = result.Item;
+    return { color, photo_url };
+
   } catch (error) {
     return error;
   }
