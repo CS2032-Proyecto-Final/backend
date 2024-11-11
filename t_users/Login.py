@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     password = body['password']
     tenant_id = body['tenant_id']
 
-    api_url = f"https://hsoml2f154.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
+    api_url = f"https://nbdn1lp357.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(api_url) as response:
         tenant_info = json.load(response)
