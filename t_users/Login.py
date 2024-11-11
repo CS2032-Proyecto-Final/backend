@@ -4,10 +4,27 @@ import hashlib
 import uuid
 import urllib.request
 import json
+import jwt
 from datetime import datetime, timedelta
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
+
+def generate_token(email, tenant_id):
+    JWT_SECRET = os.environ["JWT_SECRET"]
+
+    header = {"alg": "HS256", "typ": "JWT"}
+
+    payload = {
+        "tenant_id": tenant_id,
+        "email": email,
+        "creation_date": datetime.now().isoformat(),
+        "exp": (datetime.now() + timedelta(hours=24)).isoformat()
+    }
+
+    token = jwt.encode(payload=payload, key=JWT_SECRET, algorithm="HS256", headers=header)
+
+    return token
 
 def lambda_handler(event, context):
     body = event['body']
@@ -24,7 +41,6 @@ def lambda_handler(event, context):
     
     dynamodb = boto3.resource('dynamodb')
     users_table = dynamodb.Table(os.environ['USERS_TABLE_NAME'])
-    tokens_table = dynamodb.Table(os.environ['TOKENS_TABLE_NAME'])
     
     response = users_table.get_item(
         Key={
@@ -46,19 +62,7 @@ def lambda_handler(event, context):
             'body': {'error': 'Usuario y/o contraseña incorrectos'}
         }
 
-    token = str(uuid.uuid4())
-    creation_date = datetime.now().isoformat()
-    expiration_date = (datetime.now() + timedelta(minutes=60)).isoformat()
-    
-    token_item = {
-        'tenant_id': tenant_id,
-        'token': token,
-        'email': email,
-        'creation_date': creation_date,
-        'exp_date': expiration_date
-    }
-    
-    tokens_table.put_item(Item=token_item)
+    token = generate_token(email, tenant_id)
     
     return {
         'statusCode': 200,

@@ -12,6 +12,7 @@ provider:
     USERS_TABLE_NAME: ${sls:stage}-t_usuario
     CODES_TABLE_NAME: ${sls:stage}-t_codes
     TOKENS_TABLE_NAME: ${sls:stage}-t_tokens
+    JWT_SECRET: ${env:JWT_SECRET}
 
 functions:
   RegisterUser:
@@ -25,6 +26,9 @@ functions:
 
   Login:
     handler: Login.lambda_handler
+    package:
+      include:
+        - ./**
     events:
       - http:
           path: auth/login
@@ -34,6 +38,9 @@ functions:
 
   ValidateToken:
     handler: ValidateToken.lambda_handler
+    package:
+      include:
+        - ./**
     events:
       - http:
           path: tokens/validate
@@ -56,22 +63,6 @@ resources:
           - AttributeName: tenant_id
             KeyType: HASH
           - AttributeName: email
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
-
-    TokensTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:provider.environment.TOKENS_TABLE_NAME}
-        AttributeDefinitions:
-          - AttributeName: tenant_id
-            AttributeType: S
-          - AttributeName: token
-            AttributeType: S
-        KeySchema:
-          - AttributeName: tenant_id
-            KeyType: HASH
-          - AttributeName: token
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
 
