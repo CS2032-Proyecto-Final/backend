@@ -1,7 +1,6 @@
 import boto3
 import os
 import hashlib
-import json
 from datetime import datetime
 
 def hash_password(password):
@@ -24,7 +23,7 @@ def lambda_handler(event, context):
     #    if tenant_id != email.split('@')[1].split('.')[0]:
     #        return {
     #            'statusCode': 403,
-    #            'body': json.dumps({'error': 'Usuario no válido'})
+    #            'body': {'error': 'Usuario no válido'}
     #        }
 
     dynamodb = boto3.resource('dynamodb')
@@ -42,7 +41,7 @@ def lambda_handler(event, context):
     # if 'Item' not in code_item or code_item['Item']['expiration_date'] <= datetime.now().isoformat():
     #     return {
     #         'statusCode': 400,
-    #         'body': json.dumps({'error': 'Invalid or expired code'})
+    #         'body': {'error': 'Invalid or expired code'}
     #     }
 
     user_item = users_table.get_item(
@@ -55,7 +54,7 @@ def lambda_handler(event, context):
     if 'Item' in user_item:
         return {
             'statusCode': 409,
-            'body': json.dumps({'error': 'El usuario ya existe'})
+            'body': {'error': 'El usuario ya existe'}
         }
 
     hashed_password = hash_password(password)
@@ -81,5 +80,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps({'message': 'El usuario se registró existosamente'})
+        'body': {'message': 'El usuario se registró existosamente'}
     }
