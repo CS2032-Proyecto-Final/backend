@@ -21,11 +21,24 @@ functions:
           cors: true
           integration: lambda
 
-  getFavorites:
-    handler: getFavorites.handler
+  getActualFavorites:
+    handler: getActualFavorites.handler
     events:
       - http:
-          path: /favorite/my
+          path: /favorite/my/actual
+          method: get
+          cors: true
+          integration: lambda
+          request:
+            parameters:
+              querystrings:
+                tenant_id: true
+                email: true
+  getAllFavorites:
+    handler: getAllFavorites.handler
+    events:
+      - http:
+          path: /favorite/my/all
           method: get
           cors: true
           integration: lambda
