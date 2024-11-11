@@ -29,14 +29,8 @@ exports.handler = async (event) => {
       isFavorite: item.isFavorite,
     }));
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(favorites),
-    };
+    return favorites;
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return error;
   }
 };

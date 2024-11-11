@@ -7,38 +7,33 @@ const tableName = process.env.FAVORITES_TABLE_NAME;
 
 exports.handler = async (event) => {
   try {
-    // Obtener los parámetros de consulta y el body
-    const tenant_id = event.query.tenant_id;
-    const email = event.query.email;
+    // Parsear el cuerpo de la solicitud y extraer los datos
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const isbn = body.isbn;
+    const { tenant_id, email, isbn, isFavorite } = body;
 
     // Construir la clave de partición y de ordenación
     const itemKey = `${email}#${isbn}`;
 
-    // Actualizar el campo isFavorite a true
+    // Actualizar el campo isFavorite con el valor recibido en el body
     await dynamo.send(
       new UpdateCommand({
         TableName: tableName,
         Key: {
           tenant_id,
-          "email#isbn": itemKey,
+          "email_isbn": itemKey,
         },
         UpdateExpression: "SET isFavorite = :val",
         ExpressionAttributeValues: {
-          ":val": true,
+          ":val": isFavorite, // Se actualiza con el valor enviado en el body
         },
       })
     );
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Favorite updated successfully" }),
+      message: "Favorite updated successfully" 
     };
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return error;
   }
 };

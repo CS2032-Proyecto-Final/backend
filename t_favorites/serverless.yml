@@ -13,21 +13,16 @@ provider:
 
 functions:
   addOrUpdateFavorite:
-    handler: AddOrUpdateFavorite.handler
+    handler: addOrUpdateFavorite.handler
     events:
       - http:
           path: /favorite
           method: post
           cors: true
           integration: lambda
-          request:
-            parameters:
-              querystrings:
-                tenant_id: true
-                email: true
 
   getFavorites:
-    handler: GetFavorites.handler
+    handler: getFavorites.handler
     events:
       - http:
           path: /favorite/my
