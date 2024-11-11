@@ -1,25 +1,44 @@
 {
-    "tenant_id": "uni",
-    "color": {
-     "background": "#fffdd0",
-     "content": "#fbfbf0",
-     "sidebar": "#800020"
-    },
-    "photo_url": "url-del-logo-uni",
-    "reserv_book_time": 2,
-    "reserv_env_time": 1,
-    "email_suffix": "uni.edu.pe"
-   }
-
-{
  "tenant_id": "utec",
  "color": {
   "background": "#f2f2f2",
   "content": "#ffffff",
   "sidebar": "#00aaff"
  },
- "photo_url": "url-del-logo",
+ "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/utec-logo.jpg",
+ "reserv_book_time": 4,
+ "reserv_env_time": 2,
+ "email_suffix": "utec.edu.pe",
+ "env_types": ["computadoras", "salas_de_estudio"],
+ "full_name": "Universidad de Ingenieria y Tecnologia"
+}
+
+{
+ "tenant_id": "uni",
+ "color": {
+  "background": "#fffdd0",
+  "content": "#fbfbf0",
+  "sidebar": "#800020"
+ },
+ "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/uni-logo.png",
+ "reserv_book_time": 2,
+ "reserv_env_time": 1,
+ "email_suffix": "uni.edu.pe",
+ "env_types": ["salas_de_estudio"],
+ "full_name": "Universidad Nacional de Ingenieria"
+}
+
+{
+ "tenant_id": "upn",
+ "color": {
+  "background": "#d3d3d3",         
+  "content": "#f0f0f0",           
+  "sidebar": "#ffd966" 
+ },
+ "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/upn-logo.png",
  "reserv_book_time": 3,
  "reserv_env_time": 2,
- "email_suffix": "utec.edu.pe"
+ "email_suffix": "upn.edu.pe",
+ "env_types": ["computadoras"],
+ "full_name": "Universidad Privada del Norte"
 }
