@@ -7,29 +7,33 @@ const tableName = process.env.FAVORITES_TABLE_NAME;
 
 exports.handler = async (event) => {
   try {
-    // Obtener los parámetros de consulta
     const tenant_id = event.query.tenant_id;
     const email = event.query.email;
 
-    // Consultar los favoritos para el usuario especificado
+    // Consulta solo los elementos favoritos que tienen `isFavorite` como `true`
     const result = await dynamo.send(
       new QueryCommand({
         TableName: tableName,
-        KeyConditionExpression: "tenant_id = :tenant_id AND begins_with(email#isbn, :email)",
+        KeyConditionExpression: "tenant_id = :tenant_id AND begins_with(#emailIsbn, :email)",
+        FilterExpression: "isFavorite = :trueVal",
+        ExpressionAttributeNames: {
+          "#emailIsbn": "email#isbn"
+        },
         ExpressionAttributeValues: {
           ":tenant_id": tenant_id,
           ":email": email,
+          ":trueVal": true
         },
       })
     );
 
-    // Formatear la respuesta
-    const favorites = result.Items.map((item) => ({
+    // Formatear solo los items con `isFavorite: true`
+    const actualFavorites = result.Items.map((item) => ({
       isbn: item["email#isbn"].split("#")[1],
       isFavorite: item.isFavorite,
-    }));
+    }))
 
-    return favorites;
+    return actualFavorites;
   } catch (error) {
     return error;
   }
