@@ -8,8 +8,8 @@ const tableName = process.env.FAVORITES_TABLE_NAME;
 exports.handler = async (event) => {
   try {
     // Obtener los parámetros de consulta y el body
-    const tenant_id = event.queryStringParameters.tenant_id;
-    const email = event.queryStringParameters.email;
+    const tenant_id = event.query.tenant_id;
+    const email = event.query.email;
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
     const isbn = body.isbn;
 

@@ -16,8 +16,8 @@ exports.handler = async (event) => {
         Item: {
           tenant_id: libraryData.tenant_id,
           email_suffix: libraryData.email_suffix,
-          reserv_time: libraryData.reserv_time,
-          reserv_environ_time: libraryData.reserv_environ_time,
+          reserv_book_time: libraryData.reserv_book_time,
+          reserv_env_time: libraryData.reserv_env_time,
           color: libraryData.color,
           photo_url: libraryData.photo_url,
         },
@@ -26,12 +26,9 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Library created successfully" }),
+      body: "Library created successfully",
     };
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return error;
   }
 };

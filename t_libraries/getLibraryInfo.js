@@ -7,24 +7,17 @@ const tableName = process.env.TABLE_NAME;
 
 exports.handler = async (event) => {
   try {
-    const email = event.query.email;
-    const email_suffix = email.split('@')[1];
+    const tenant_id = event.query.tenant_id;
 
     const result = await dynamo.send(
       new GetCommand({
         TableName: tableName,
-        Key: { email_suffix },
+        Key: { tenant_id },
       })
     );
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(result.Item || { message: "Library not found" }),
-    };
+    return result.Item;
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return error;
   }
 };

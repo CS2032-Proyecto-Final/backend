@@ -32,7 +32,7 @@ functions:
           request:
             parameters:
               querystrings:
-                email: true
+                tenant_id: true
 
 resources:
   Resources:
@@ -41,9 +41,9 @@ resources:
       Properties:
         TableName: ${self:provider.environment.TABLE_NAME}
         AttributeDefinitions:
-          - AttributeName: email_suffix
+          - AttributeName: tenant_id
             AttributeType: S
         KeySchema:
-          - AttributeName: email_suffix
+          - AttributeName: tenant_id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
