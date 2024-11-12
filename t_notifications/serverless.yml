@@ -8,7 +8,9 @@ provider:
   timeout: 30
   iam:
     role: arn:aws:iam::857380799566:role/LabRole 
-  
+  environment:
+    GMAIL_USER: bibliokuna@gmail.com 
+    GMAIL_PASS: lxjg aujr whey ghby 
 
 functions:
   sendEmail:
