@@ -1,0 +1,23 @@
+org: bibliokuna
+service: api-emails
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 1024
+  timeout: 30
+  iam:
+    role: arn:aws:iam::857380799566:role/LabRole 
+  environment:
+    GMAIL_USER: bibliokuna@gmail.com 
+    GMAIL_PASS: lxjg aujr whey ghby 
+
+functions:
+  sendEmail:
+    handler: sendRegistration.handler 
+    events:
+      - http:
+          path: /emails/send 
+          method: post       
+          cors: true        
+          integration: lambda
