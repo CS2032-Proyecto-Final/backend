@@ -37,7 +37,7 @@ functions:
           method: get
           cors: true
           integration: lambda
-  getBook:
+  searchBooks:
     handler: SearchBooks.lambda_handler
     events:
       - http:

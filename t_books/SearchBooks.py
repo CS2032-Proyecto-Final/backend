@@ -10,9 +10,9 @@ def lambda_handler(event, context):
     email = event['query']['email']
     page = int(event['query']['page'])
     limit = int(event['query']['limit'])
-    title = event['query'].get('title')
-    author_name = event['query'].get('author_name')
-    author_lastname = event['query'].get('author_lastname')
+    title = event['query'].get('title', '').lower()
+    author_name = event['query'].get('author_name', '').lower()
+    author_lastname = event['query'].get('author_lastname', '').lower()
     isbn = event['query'].get('isbn')
 
     # Conexión a DynamoDB para la tabla de libros
@@ -40,26 +40,54 @@ def lambda_handler(event, context):
         'Limit': limit,
     }
 
-    # Determinar el índice y la expresión de condición según el parámetro de búsqueda
+    # Determinar el índice y la expresión de condición según los parámetros de búsqueda
     if isbn:
         # Búsqueda por ISBN específico
         query_params.update({
             'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('isbn').eq(isbn)
         })
+    elif title and author_name and author_lastname:
+        # Búsqueda por combinación de título, nombre y apellido del autor
+        query_params.update({
+            'IndexName': 'title-index',
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title),
+            'FilterExpression': Key('author_name').begins_with(author_name) & Key('author_lastname').begins_with(author_lastname)
+        })
+    elif title and author_name:
+        # Búsqueda por título y nombre del autor
+        query_params.update({
+            'IndexName': 'title-index',
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title),
+            'FilterExpression': Key('author_name').begins_with(author_name)
+        })
+    elif title and author_lastname:
+        # Búsqueda por título y apellido del autor
+        query_params.update({
+            'IndexName': 'title-index',
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title),
+            'FilterExpression': Key('author_lastname').begins_with(author_lastname)
+        })
+    elif author_name and author_lastname:
+        # Búsqueda por nombre y apellido del autor
+        query_params.update({
+            'IndexName': 'author_name-index',
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_name').begins_with(author_name),
+            'FilterExpression': Key('author_lastname').begins_with(author_lastname)
+        })
     elif title:
-        # Búsqueda por título usando el índice `title-index`
+        # Búsqueda solo por título
         query_params.update({
             'IndexName': 'title-index',
             'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title)
         })
     elif author_name:
-        # Búsqueda por nombre del autor usando `author_name-index`
+        # Búsqueda solo por nombre del autor
         query_params.update({
             'IndexName': 'author_name-index',
             'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_name').begins_with(author_name)
         })
     elif author_lastname:
-        # Búsqueda por apellido del autor usando `author_lastname-index`
+        # Búsqueda solo por apellido del autor
         query_params.update({
             'IndexName': 'author_lastname-index',
             'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_lastname').begins_with(author_lastname)
