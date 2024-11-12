@@ -11,7 +11,7 @@ exports.handler = async (event) => {
     const gmailPass = process.env.GMAIL_PASS;
 
     // Read and populate the HTML template
-    const templatePath = path.resolve(__dirname, 'sendSignup.html'); // Ensure this matches your template file path
+    const templatePath = path.resolve(__dirname, 'sendSignUp.html'); // Ensure this matches your template file path
     let htmlTemplate = fs.readFileSync(templatePath, 'utf8');
 
     // Replace placeholders in the HTML template with actual data
