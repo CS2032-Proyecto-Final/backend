@@ -58,11 +58,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: email
-          in: query
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -122,11 +117,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: email
-          in: query
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -173,11 +163,6 @@ paths:
       summary: Get reservations by type and status
       parameters:
         - name: tenant_id
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: email
           in: query
           required: true
           schema:

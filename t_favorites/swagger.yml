@@ -18,11 +18,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: email
-          in: query
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -63,11 +58,6 @@ paths:
       summary: Change the favorite status of a book
       parameters:
         - name: tenant_id
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: email
           in: query
           required: true
           schema:
@@ -114,11 +104,6 @@ paths:
       summary: Get the list of the user's favorite books
       parameters:
         - name: tenant_id
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: email
           in: query
           required: true
           schema:
