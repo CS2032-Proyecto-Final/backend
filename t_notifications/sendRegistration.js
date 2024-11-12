@@ -1,7 +1,8 @@
 const nodemailer = require('nodemailer');
 
-exports.handler = async () => {
-    // const { email, subject, message } = event;
+exports.handler = async (event) => {
+    const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const { email, subject, message } = event;
 
     // Get Gmail credentials from environment variables
     const gmailUser = process.env.GMAIL_USER;
@@ -19,9 +20,9 @@ exports.handler = async () => {
     // Email options
     const mailOptions = {
         from: gmailUser, // Use the same Gmail address as the sender
-        to: gmailUser,        // Recipient address
-        subject: "This is a test email", // Subject of the email
-        text: "Test email from me to me",    // Plain text body
+        to: email,        // Recipient address
+        subject: subject, // Subject of the email
+        text: message,    // Plain text body
     };
 
     try {
