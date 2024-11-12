@@ -4,14 +4,14 @@ const path = require('path');
 
 exports.handler = async (event) => {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { email, firstname, lastname, tenant_id, creationDate } = body;
+    const { email, firstname, lastname, creationDate } = body;
 
     // Get Gmail credentials from environment variables
     const gmailUser = process.env.GMAIL_USER;
     const gmailPass = process.env.GMAIL_PASS;
 
     // Read and populate the HTML template
-    const templatePath = path.resolve(__dirname, 'sendSignupEmail.html'); // Ensure this matches your template file path
+    const templatePath = path.resolve(__dirname, 'sendSignup.html'); // Ensure this matches your template file path
     let htmlTemplate = fs.readFileSync(templatePath, 'utf8');
 
     // Replace placeholders in the HTML template with actual data

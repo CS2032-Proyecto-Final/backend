@@ -4,7 +4,7 @@ const path = require('path');
 
 exports.handler = async (event) => {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { email, subject, name, title, pickupDate, maxReturnDate } = body;
+    const { email,  name, title, pickupDate, maxReturnDate } = body;
 
     // Get Gmail credentials from environment variables
     const gmailUser = process.env.GMAIL_USER;
@@ -34,7 +34,7 @@ exports.handler = async (event) => {
     const mailOptions = {
         from: `"Bibliokuna" <${gmailUser}>`, // Sender address
         to: email,                          // Recipient address
-        subject: subject,                   // Subject of the email
+        subject: "Confirmación de Reserva de Libro",                   // Subject of the email
         html: htmlTemplate,                 // Use HTML template as the body
     };
 
