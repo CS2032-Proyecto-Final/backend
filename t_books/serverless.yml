@@ -21,16 +21,16 @@ functions:
           cors: true
           integration: lambda
 
-  readBooks:
-    handler: ReadBooks.lambda_handler
+  getBooks:
+    handler: GetBooks.lambda_handler
     events:
       - http:
           path: /books
           method: get
           cors: true
           integration: lambda
-  readBook:
-    handler: ReadBook.lambda_handler
+  getBook:
+    handler: GetBook.lambda_handler
     events:
       - http:
           path: /book

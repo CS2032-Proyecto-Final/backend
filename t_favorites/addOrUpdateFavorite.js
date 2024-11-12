@@ -43,7 +43,7 @@ exports.handler = async (event) => {
       })
     );
 
-    return { message: "Favorite updated successfully", isFavorite: newIsFavorite };
+    return { message: "Favorite updated successfully", isbn: body.isbn, isFavorite: newIsFavorite };
   } catch (error) {
     return error;
   }
