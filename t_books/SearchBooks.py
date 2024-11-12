@@ -28,9 +28,11 @@ def lambda_handler(event, context):
         api_url = f"https://9vaeq95yoh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
         with urllib.request.urlopen(api_url) as response:
             favorites_data = json.load(response)
-            favorite_items = favorites_data.get("body", [])
-            favorite_isbns = {item['isbn'] for item in favorite_items if item['isFavorite']}
-            favorites_present = bool(favorite_items)
+            # Asegúrate de acceder a la estructura correcta
+            if "body" in favorites_data and isinstance(favorites_data["body"], list):
+                favorite_items = favorites_data["body"]
+                favorite_isbns = {item['isbn'] for item in favorite_items if item['isFavorite']}
+                favorites_present = bool(favorite_items)
     except Exception as e:
         print(f"Error al obtener favoritos: {e}")
         favorites_present = False  # Indicar que no hay favoritos disponibles en caso de error
