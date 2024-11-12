@@ -1,0 +1,196 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: Microservice Environment API
+  description: API for managing environments with reservation and status update functionality.
+
+host: "api.microserviceenvironment.com"
+basePath: "/v1"
+schemes:
+  - https
+paths:
+  /environment/list:
+    get:
+      summary: Get list of environments
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of environments with their name, hour, status, and capacity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        hour:
+                          type: string
+                        status:
+                          type: string
+                        capacity:
+                          type: integer
+                  message:
+                    type: string
+                    example: ""
+
+  /environment/status:
+    patch:
+      summary: Change environment status
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                name:
+                  type: string
+                hour:
+                  type: string
+      responses:
+        202:
+          description: Environment status changed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 202
+                  message:
+                    type: string
+                    example: "Environment status changed"
+        406:
+          description: Environment hour status is occupied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 406
+                  message:
+                    type: string
+                    example: "Environment hour status: occupied"
+
+  /environment/info:
+    get:
+      summary: Get environment information (capacity)
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: env_name
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: hour
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Environment capacity information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: object
+                    properties:
+                      capacity:
+                        type: integer
+                  message:
+                    type: string
+                    example: ""
+        404:
+          description: Environment not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Env not found"
+
+  /environment/reset_status:
+    patch:
+      summary: Reset status of all environments to available
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: All environments status changed to available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Environments changed"
+
+definitions:
+  Environment:
+    type: object
+    properties:
+      name:
+        type: string
+      hour:
+        type: string
+      status:
+        type: string
+      capacity:
+        type: integer
