@@ -25,7 +25,7 @@ def lambda_handler(event, context):
 
     # Intentar obtener los favoritos
     try:
-        api_url = f"https://wb5hznomeh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
+        api_url = f"https://9vaeq95yoh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
         with urllib.request.urlopen(api_url) as response:
             favorites_data = json.load(response)
             favorite_items = favorites_data.get("body", [])
