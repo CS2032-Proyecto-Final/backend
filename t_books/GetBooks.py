@@ -15,11 +15,21 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["TABLE_NAME"])
 
-    # Conexión a la API de favoritos para obtener el estado de `isFavorite`
-    api_url = f"https://wb5hznomeh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
-    with urllib.request.urlopen(api_url) as response:
-        favorites_data = json.load(response)
-        favorite_isbns = {item['isbn'] for item in favorites_data if item['isFavorite']}
+    # Inicializar favoritos
+    favorite_isbns = set()
+    favorites_present = False
+
+    # Intentar obtener los favoritos
+    try:
+        api_url = f"https://wb5hznomeh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
+        with urllib.request.urlopen(api_url) as response:
+            favorites_data = json.load(response)
+            favorite_items = favorites_data.get("body", [])
+            favorite_isbns = {item['isbn'] for item in favorite_items if item['isFavorite']}
+            favorites_present = bool(favorite_items)
+    except Exception as e:
+        print(f"Error al obtener favoritos: {e}")
+        favorites_present = False  # Indicar que no hay favoritos disponibles en caso de error
 
     # Configurar parámetros de consulta para libros
     query_params = {
@@ -37,7 +47,10 @@ def lambda_handler(event, context):
         if not exclusive_start_key:
             return {
                 "statusCode": 200,
-                "body": []
+                "body": {
+                    "favorites": favorites_present,
+                    "books": []
+                }
             }
 
         # Actualizar la clave de inicio exclusiva para la siguiente iteración
@@ -53,5 +66,8 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
-        "body": items
+        "body": {
+            "favorites": favorites_present,
+            "books": items
+        }
     }

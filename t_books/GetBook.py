@@ -23,7 +23,7 @@ def lambda_handler(event, context):
     if not items:
         return {
             'statusCode': 404,
-            'body': json.dumps({'message': 'Libro no encontrado'})
+            'body': {'message': 'Libro no encontrado'}
         }
 
     return {
