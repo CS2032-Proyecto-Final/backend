@@ -3,9 +3,9 @@ const nodemailer = require('nodemailer');
 exports.handler = async (event) => {
     const { email, subject, message } = event;
 
-    // Get Gmail credentials from environment variables
-    const gmailUser = process.env.GMAIL_USER;
-    const gmailPass = process.env.GMAIL_PASS;
+    // // Get Gmail credentials from environment variables
+    // const gmailUser = process.env.GMAIL_USER;
+    // const gmailPass = process.env.GMAIL_PASS;
 
     // Gmail SMTP configuration
     const transporter = nodemailer.createTransport({
@@ -14,14 +14,14 @@ exports.handler = async (event) => {
         secure: false,
         service: 'gmail',
         auth: {
-            user: gmailUser, // Gmail address from environment variable
-            pass: gmailPass, // App password from environment variable
+            user: "bibliokuna@gmail.com", // Gmail address from environment variable
+            pass: "hwzj ppwn tutm ojth", // App password from environment variable
         },
     });
 
     // Email options
     const mailOptions = {
-        from: gmailUser, // Use the same Gmail address as the sender
+        from: "bibliokuna@gmail.com", // Use the same Gmail address as the sender
         to: email,        // Recipient address
         subject: subject, // Subject of the email
         text: message,    // Plain text body
