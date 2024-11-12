@@ -42,3 +42,18 @@
  "env_types": ["computadoras"],
  "full_name": "Universidad Privada del Norte"
 }
+
+{
+ "tenant_id": "unmsm",
+ "color": {
+  "background": "#e0e0e0",  
+  "content": "#f7f7f7",    
+  "sidebar": "#800040"   
+ },
+ "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/unmsm-logo.png",
+ "reserv_book_time": 2,
+ "reserv_env_time": 2,
+ "email_suffix": "unmsm.edu.pe",
+ "env_types": ["computadoras", "salas_de_estudio", "salas_de_talleres"],
+ "full_name": "Universidad Nacional Mayor de San Marcos"
+}
