@@ -16,13 +16,16 @@ def lambda_handler(event, context):
     # Obtener el nombre de la tabla desde la variable de entorno
     nombre_tabla = os.environ["TABLE_NAME"]
     
-    # Crear el objeto libro
+    # Crear el objeto libro con índices en minúsculas
     libro = {
         'tenant_id': tenant_id,
         'isbn': isbn,
         'title': title,
+        'title_index': title.lower(),  # Version minúscula para búsqueda
         'author_name': author_name,
+        'author_name_index': author_name.lower(),  # Version minúscula para búsqueda
         'author_lastname': author_lastname,
+        'author_lastname_index': author_lastname.lower(),  # Version minúscula para búsqueda
         'quantity': quantity,
         'pages': pages,
         'stock': stock
