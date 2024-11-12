@@ -1,0 +1,217 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: Microservice Library API
+  description: API for managing library environment types, email suffixes, and library information.
+
+host: "api.microservicelibrary.com"
+basePath: "/v1"
+schemes:
+  - https
+paths:
+  /library/env_types:
+    get:
+      summary: Get the list of environment types for a tenant
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: env_type
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: List of environment types
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: object
+                    properties:
+                      env_type:
+                        type: array
+                        items:
+                          type: string
+                  message:
+                    type: string
+                    example: ""
+        404:
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Tenant not found"
+
+  /library/suffix:
+    get:
+      summary: Get the email suffix for a tenant
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Email suffix found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: object
+                    properties:
+                      suffix_email:
+                        type: string
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Not found"
+
+  /library:
+    get:
+      summary: Get the list of libraries
+      responses:
+        200:
+          description: List of libraries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        tenant_id:
+                          type: string
+                        name:
+                          type: string
+                        logo_url:
+                          type: string
+                  message:
+                    type: string
+                    example: ""
+
+  /library/info:
+    get:
+      summary: Get information about a specific library
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Library information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: object
+                    properties:
+                      rest_time:
+                        type: string
+                      color:
+                        type: object
+                        properties:
+                          primary:
+                            type: string
+                          secondary:
+                            type: string
+                      logo_url:
+                        type: string
+                      name:
+                        type: string
+                  message:
+                    type: string
+                    example: ""
+        404:
+          description: Library not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Library not found"
+
+components:
+  schemas:
+    EnvironmentType:
+      type: object
+      properties:
+        env_type:
+          type: array
+          items:
+            type: string
+    LibraryInfo:
+      type: object
+      properties:
+        rest_time:
+          type: string
+        color:
+          type: object
+          properties:
+            primary:
+              type: string
+            secondary:
+              type: string
+        logo_url:
+          type: string
+        name:
+          type: string
+    Library:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        name:
+          type: string
+        logo_url:
+          type: string
