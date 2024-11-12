@@ -23,8 +23,8 @@ def lambda_handler(event, context):
     firstname = ""
     lastname = ""
 
-    if tenant_info["email_suffix"] != "*":
-       if tenant_info["email_suffix"] != email.split('@')[1]:
+    if tenant_info["body"]["email_suffix"] != "*":
+       if tenant_info["body"]["email_suffix"] != email.split('@')[1]:
            return {
                'statusCode': 403,
                'body': {'error': 'Usuario no válido'}
