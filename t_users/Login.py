@@ -1,7 +1,6 @@
 import boto3
 import os
 import hashlib
-import uuid
 import urllib.request
 import json
 import jwt

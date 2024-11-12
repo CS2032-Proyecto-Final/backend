@@ -1,7 +1,9 @@
 import boto3
 import os
 import hashlib
+import urllib.request
 from datetime import datetime
+import json
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
@@ -11,18 +13,28 @@ def lambda_handler(event, context):
     body = event['body']
     email = body['email']
     password = body['password']
-    firstname = body['firstname']
-    lastname = body['lastname']
     tenant_id = body['tenant_id']
 
-    # Esto se debería verificar (todavia no esta implementado creo asi que no puedo verificarlo)
+    api_url = f"https://nbdn1lp357.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
 
-    # if tenant_id es una universidad:
-    #    if tenant_id != email.split('@')[1].split('.')[0]:
-    #        return {
-    #            'statusCode': 403,
-    #            'body': {'error': 'Usuario no válido'}
-    #        }
+    with urllib.request.urlopen(api_url) as response:
+        tenant_info = json.load(response)
+
+    firstname = ""
+    lastname = ""
+
+    if tenant_info["email_suffix"] != "*":
+       if tenant_info["email_suffix"] != email.split('@')[1]:
+           return {
+               'statusCode': 403,
+               'body': {'error': 'Usuario no válido'}
+           }
+       firstname = email.split('@')[0].split('.')[0]
+       lastname = email.split('@')[0].split('.')[1]
+    else:
+        firstname = body['firstname']
+        lastname = body['lastname']
+    
 
     dynamodb = boto3.resource('dynamodb')
     users_table = dynamodb.Table(os.environ['USERS_TABLE_NAME'])

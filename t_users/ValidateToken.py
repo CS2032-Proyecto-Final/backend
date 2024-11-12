@@ -1,6 +1,4 @@
-import boto3
 import os
-from datetime import datetime
 import jwt
 
 def validate_jwt(token):
