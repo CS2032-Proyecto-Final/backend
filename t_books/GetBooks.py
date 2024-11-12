@@ -35,7 +35,10 @@ def lambda_handler(event, context):
         
         # Si no hay más datos, retornar una lista vacía
         if not exclusive_start_key:
-            return []
+            return {
+                "statusCode": 200,
+                "body": []
+            }
 
         # Actualizar la clave de inicio exclusiva para la siguiente iteración
         query_params['ExclusiveStartKey'] = exclusive_start_key
@@ -48,4 +51,7 @@ def lambda_handler(event, context):
     for item in items:
         item['isFavorite'] = item.get('isbn') in favorite_isbns
 
-    return items
+    return {
+        "statusCode": 200,
+        "body": items
+    }

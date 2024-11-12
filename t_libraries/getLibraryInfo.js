@@ -16,12 +16,26 @@ exports.handler = async (event) => {
       })
     );
 
-    if(!result.Item){
-      return "Tenant not found";
+    if (!result.Item) {
+      return {
+        statusCode: 404,
+        body: {
+          message: "Tenant not found"
+        }
+      };
     }
-    return result.Item;
-    
+
+    return {
+      statusCode: 200,
+      body: result.Item
+    };
+
   } catch (error) {
-    return error;
+    return {
+      statusCode: 500,
+      body: {
+        error: error.message || "An error occurred while retrieving the tenant"
+      }
+    };
   }
 };

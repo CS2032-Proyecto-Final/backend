@@ -43,8 +43,20 @@ exports.handler = async (event) => {
       })
     );
 
-    return { message: "Favorite updated successfully", isbn: body.isbn, isFavorite: newIsFavorite };
+    return {
+      statusCode: 200,
+      body: {
+        message: "Favorite updated successfully",
+        isbn: body.isbn,
+        isFavorite: newIsFavorite,
+      }
+    };
   } catch (error) {
-    return error;
+    return {
+      statusCode: 500,
+      body: {
+        error: error.message || "An error occurred while updating the favorite status"
+      }
+    };
   }
 };

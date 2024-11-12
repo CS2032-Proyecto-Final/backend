@@ -17,13 +17,22 @@ exports.handler = async (event) => {
     );
 
     if (!result.Item) {
-      return "Tenant not found";
+      return {
+        statusCode: 404,
+        body: { message: "Tenant not found" }
+      };
     }
 
     const { color, photo_url } = result.Item;
-    return { color, photo_url };
+    return {
+      statusCode: 200,
+      body: { color, photo_url }
+    };
 
   } catch (error) {
-    return error;
+    return {
+      statusCode: 500,
+      body: { error: error.message || "Internal server error" }
+    };
   }
 };

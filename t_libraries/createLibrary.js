@@ -27,9 +27,17 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: "Library created successfully",
+      body: {
+        message: "Library created successfully",
+        data: libraryData
+      }
     };
   } catch (error) {
-    return error;
+    return {
+      statusCode: 500,
+      body: {
+        error: error.message || "An error occurred while creating the library"
+      }
+    };
   }
 };

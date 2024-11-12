@@ -31,10 +31,18 @@ exports.handler = async (event) => {
     const actualFavorites = result.Items.map((item) => ({
       isbn: item["email#isbn"].split("#")[1],
       isFavorite: item.isFavorite,
-    }))
+    }));
 
-    return actualFavorites;
+    return {
+      statusCode: 200,
+      body: actualFavorites,
+    };
   } catch (error) {
-    return error;
+    return {
+      statusCode: 500,
+      body: {
+        error: error.message || "An error occurred while retrieving favorite items",
+      },
+    };
   }
 };

@@ -17,13 +17,23 @@ exports.handler = async (event) => {
     if (!result.Items || result.Items.length === 0) {
       return {
         statusCode: 404,
-        body: "No tenants found"
+        body: {
+          message: "No tenants found"
+        }
       };
     }
 
-    return result.Items;
+    return {
+      statusCode: 200,
+      body: result.Items
+    };
 
   } catch (error) {
-    return error;
+    return {
+      statusCode: 500,
+      body: {
+        error: error.message || "An error occurred during the scan operation"
+      }
+    };
   }
 };

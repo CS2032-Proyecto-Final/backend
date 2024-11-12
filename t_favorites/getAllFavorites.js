@@ -32,8 +32,16 @@ exports.handler = async (event) => {
       isFavorite: item.isFavorite,
     }));
 
-    return allFavorites;
+    return {
+      statusCode: 200,
+      body: allFavorites,
+    };
   } catch (error) {
-    return error;
+    return {
+      statusCode: 500,
+      body: {
+        error: error.message || "An error occurred while retrieving favorites",
+      },
+    };
   }
 };
