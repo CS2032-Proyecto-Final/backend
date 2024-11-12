@@ -1,0 +1,160 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: User Authentication API
+  description: API for user registration and login functionality.
+
+host: "api.microserviceusers.com"
+basePath: "/v1"
+schemes:
+  - https
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                tenant_id:
+                  type: string
+      responses:
+        200:
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "User registered successfully"
+        409:
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 409
+                  message:
+                    type: string
+                    example: "Already exists"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Not authorized"
+
+  /auth/login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                tenant_id:
+                  type: string
+      responses:
+        200:
+          description: Successful login, returns user details and token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: object
+                    properties:
+                      color:
+                        type: string
+                      url:
+                        type: string
+                      res_time:
+                        type: string
+                      token:
+                        type: string
+                  message:
+                    type: string
+                    example: ""
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Not found"
+
+components:
+  schemas:
+    UserRegistration:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        tenant_id:
+          type: string
+
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        tenant_id:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        color:
+          type: string
+        url:
+          type: string
+        res_time:
+          type: string
+        token:
+          type: string

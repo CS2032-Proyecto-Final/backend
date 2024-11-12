@@ -1,0 +1,255 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: Microservice Book API
+  description: API for managing books with pagination and LSI in DynamoDB.
+host: "api.microservicebook.com"
+basePath: "/v1"
+schemes:
+  - https
+paths:
+  /book:
+    get:
+      summary: Get list of books
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of books with pagination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  message:
+                    type: string
+                    example: ""
+
+  /book/title:
+    get:
+      summary: Get list of books by title with pagination
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: title
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of books filtered by title
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  message:
+                    type: string
+                    example: ""
+
+  /book/author/name:
+    get:
+      summary: Get list of books by author name with pagination
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: author_name
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of books filtered by author name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  message:
+                    type: string
+                    example: ""
+
+  /book/author/lastname:
+    get:
+      summary: Get list of books by author lastname with pagination
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: author_lastname
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of books filtered by author lastname
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  message:
+                    type: string
+                    example: ""
+
+  /book/isbn:
+    get:
+      summary: Get a book by ISBN
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Book information by ISBN
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    $ref: '#/components/schemas/Book'
+                  message:
+                    type: string
+                    example: ""
+
+  /book/info:
+    get:
+      summary: Get detailed book information by ISBN
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: isbn
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Detailed book information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: object
+                    properties:
+                      tenant_id:
+                        type: string
+                      isbn:
+                        type: string
+                      title:
+                        type: string
+                      author_name:
+                        type: string
+                      author_lastname:
+                        type: string
+                      stock:
+                        type: integer
+                      pages:
+                        type: integer
+                  message:
+                    type: string
+                    example: ""
+        404:
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Book not found"
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        isbn:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        isFavorite:
+          type: boolean

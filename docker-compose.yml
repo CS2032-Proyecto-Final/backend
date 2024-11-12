@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  swagger-books:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-books
+    ports:
+      - "8081:8080"
+    environment:
+      SWAGGER_JSON: /app/swagger.yaml
+    volumes:
+      - ./t_books/swagger.yml:/app/swagger.yaml
+
+  swagger-users:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-users
+    ports:
+      - "8086:8080"
+    environment:
+      SWAGGER_JSON: /app/swagger.yaml
+    volumes:
+      - ./t_users/swagger.yml:/app/swagger.yaml
+
+  swagger-reservations:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-reservations
+    ports:
+      - "8085:8080"
+    environment:
+      SWAGGER_JSON: /app/swagger.yaml
+    volumes:
+      - ./t_reservations/swagger.yml:/app/swagger.yaml
+
+  swagger-favorites:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-favorites
+    ports:
+      - "8083:8080"
+    environment:
+      SWAGGER_JSON: /app/swagger.yaml
+    volumes:
+      - ./t_favorites/swagger.yml:/app/swagger.yaml
+
+  swagger-library:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-library
+    ports:
+      - "8084:8080"
+    environment:
+      SWAGGER_JSON: /app/swagger.yaml
+    volumes:
+      - ./t_libraries/swagger.yml:/app/swagger.yaml
+
+  swagger-environments:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-environments
+    ports:
+      - "8082:8080"
+    environment:
+      SWAGGER_JSON: /app/swagger.yaml
+    volumes:
+      - ./t_environments/swagger.yml:/app/swagger.yaml
+

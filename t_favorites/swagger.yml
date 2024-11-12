@@ -1,0 +1,172 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: Microservice Favorite API
+  description: API for managing the user's favorite books.
+
+host: "api.microservicefavorite.com"
+basePath: "/v1"
+schemes:
+  - https
+paths:
+  /favorite/books:
+    post:
+      summary: Add books to the user's favorites
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  isbn:
+                    type: string
+      responses:
+        200:
+          description: Books added to favorites
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        isbn:
+                          type: string
+                        isFavorite:
+                          type: boolean
+                  message:
+                    type: string
+                    example: "Books successfully added to favorites."
+
+  /favorite/status:
+    post:
+      summary: Change the favorite status of a book
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isbn:
+                  type: string
+      responses:
+        200:
+          description: Favorite status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Favorite status updated"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: "Invalid request"
+
+  /favorite/my:
+    get:
+      summary: Get the list of the user's favorite books
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of user's favorite books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        isbn:
+                          type: string
+                        title:
+                          type: string
+                        author:
+                          type: string
+                        isFavorite:
+                          type: boolean
+                  message:
+                    type: string
+                    example: ""
+
+definitions:
+  FavoriteBook:
+    type: object
+    properties:
+      isbn:
+        type: string
+      isFavorite:
+        type: boolean
+  UserFavorite:
+    type: object
+    properties:
+      isbn:
+        type: string
+      title:
+        type: string
+      author:
+        type: string
+      isFavorite:
+        type: boolean

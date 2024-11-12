@@ -1,0 +1,285 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: Microservice Reservation API
+  description: API for managing book and environment reservations.
+
+host: "api.microservicereservation.com"
+basePath: "/v1"
+schemes:
+  - https
+paths:
+  /reservation/book/pending:
+    get:
+      summary: Get list of pending book reservations
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of pending book reservations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        isbn:
+                          type: string
+                        title:
+                          type: string
+                        author:
+                          type: string
+                  message:
+                    type: string
+                    example: ""
+
+  /reservation/book:
+    post:
+      summary: Reserve a book
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isbn:
+                  type: string
+      responses:
+        200:
+          description: Book reservation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: ""
+        406:
+          description: No stock available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 406
+                  message:
+                    type: string
+                    example: "No stock"
+        404:
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Book not found"
+
+  /reservation/environment:
+    post:
+      summary: Reserve an environment
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                name:
+                  type: string
+                hour:
+                  type: string
+      responses:
+        201:
+          description: Environment reservation confirmed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Reservation confirmed"
+        406:
+          description: Environment hour status occupied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 406
+                  message:
+                    type: string
+                    example: "Environment hour status: occupied"
+
+  /reservation:
+    get:
+      summary: Get reservations by type and status
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of reservations by type and status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        isbn:
+                          type: string
+                        author:
+                          type: string
+                        title:
+                          type: string
+                        max_return_date:
+                          type: string
+                  message:
+                    type: string
+                    example: ""
+
+  /reservation/book/expired:
+    get:
+      summary: Get list of expired book reservations
+      parameters:
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of expired book reservations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  body:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                        isbn:
+                          type: string
+                        author:
+                          type: string
+                        title:
+                          type: string
+                        pick_up_time:
+                          type: string
+                        max_return_date:
+                          type: string
+                  message:
+                    type: string
+                    example: ""
+
+components:
+  schemas:
+    Reservation:
+      type: object
+      properties:
+        isbn:
+          type: string
+        author:
+          type: string
+        title:
+          type: string
+        max_return_date:
+          type: string
+    EnvironmentReservation:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        hour:
+          type: string
