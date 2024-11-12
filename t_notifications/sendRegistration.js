@@ -1,12 +1,25 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 
 exports.handler = async (event) => {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { email, subject, message } = event;
+    const { email, subject, name, title, pickupDate, maxReturnDate } = body;
 
     // Get Gmail credentials from environment variables
     const gmailUser = process.env.GMAIL_USER;
     const gmailPass = process.env.GMAIL_PASS;
+
+    // Read and populate the HTML template
+    const templatePath = path.resolve(__dirname, 'sendRegistration.html'); // Ensure this matches your template file path
+    let htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+
+    // Replace placeholders in the HTML template with actual data
+    htmlTemplate = htmlTemplate
+        .replace('{{name}}', name)
+        .replace('{{title}}', title)
+        .replace('{{pickupDate}}', pickupDate)
+        .replace('{{maxReturnDate}}', maxReturnDate);
 
     // Gmail SMTP configuration
     const transporter = nodemailer.createTransport({
@@ -19,10 +32,10 @@ exports.handler = async (event) => {
 
     // Email options
     const mailOptions = {
-        from: gmailUser, // Use the same Gmail address as the sender
-        to: email,        // Recipient address
-        subject: subject, // Subject of the email
-        text: message,    // Plain text body
+        from: `"Bibliokuna" <${gmailUser}>`, // Sender address
+        to: email,                          // Recipient address
+        subject: subject,                   // Subject of the email
+        html: htmlTemplate,                 // Use HTML template as the body
     };
 
     try {

@@ -21,3 +21,7 @@ functions:
           method: post       
           cors: true        
           integration: lambda
+
+package:
+  include:
+    - emailTemplate.html # Include the HTML template in the deployment package
