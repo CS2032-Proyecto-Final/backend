@@ -2,9 +2,9 @@ import boto3
 import os
 import hashlib
 import urllib.request
+from urllib.error import URLError, HTTPError
 from datetime import datetime
 import json
-import requests
 from concurrent.futures import ThreadPoolExecutor
 
 def hash_password(password):
@@ -12,9 +12,21 @@ def hash_password(password):
 
 def send_email_async(email_payload, email_endpoint):
     try:
-        response = requests.post(email_endpoint, json=email_payload)
-        if response.status_code != 200:
-            print(f"Error sending email: {response.text}")
+        # Convert the email payload to JSON
+        data = json.dumps(email_payload).encode('utf-8')
+
+        # Create a request object
+        req = urllib.request.Request(email_endpoint, data=data, method="POST")
+        req.add_header('Content-Type', 'application/json')
+
+        # Send the request
+        with urllib.request.urlopen(req) as response:
+            if response.status != 200:
+                print(f"Error sending email: {response.read().decode('utf-8')}")
+    except HTTPError as e:
+        print(f"HTTPError: {e.code} - {e.reason}")
+    except URLError as e:
+        print(f"URLError: {e.reason}")
     except Exception as e:
         print(f"Exception occurred while sending email: {e}")
 
