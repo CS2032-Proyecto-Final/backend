@@ -16,14 +16,6 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .header {
-            background-color: #23488A;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
         .content {
             padding: 20px;
             text-align: left;
@@ -39,12 +31,12 @@
 </head>
 <body>
     <div class="email-container">
-        <div class="header">
+        <div class="header" style="background-color: {{color}}">
             <h1>Bienvenido/a a Bibliokuna</h1>
         </div>
         <div class="content">
             <p>Estimado/a {{firstname}} {{lastname}},</p>
-            <p>¡Gracias por registrarte en nuestro servicio! Aquí están tus datos:</p>
+            <p>¡Gracias por registrarte en nuestro servicio a través de la {{full_name}}! Aquí están tus datos:</p>
             <ul>
                 <li><strong>Correo Electrónico:</strong> {{email}}</li>
                 <li><strong>Fecha de Registro:</strong> {{creationDate}}</li>
