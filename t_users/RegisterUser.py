@@ -29,8 +29,8 @@ def lambda_handler(event, context):
                'statusCode': 403,
                'body': {'error': 'Usuario no válido'}
            }
-       firstname = email.split('@')[0].split('.')[0]
-       lastname = email.split('@')[0].split('.')[1]
+       firstname = email.split('@')[0].split('.')[0].capitalize()
+       lastname = email.split('@')[0].split('.')[1].capitalize()
     else:
         firstname = body['firstname']
         lastname = body['lastname']
