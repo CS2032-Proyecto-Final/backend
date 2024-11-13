@@ -94,7 +94,7 @@ def lambda_handler(event, context):
         "lastname": lastname,
         "creationDate": creation_date,
         "full_name" : tenant_info["body"]["full_name"],
-        "color" : tenant_info["body"]["color"]["background"]
+        "color" : tenant_info["body"]["color"]["sidebar"]
     }
 
     # Email endpoint
