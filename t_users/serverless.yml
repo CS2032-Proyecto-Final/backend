@@ -10,8 +10,6 @@ provider:
     role: ${env:LAB_ROLE_ARN}
   environment:
     USERS_TABLE_NAME: ${sls:stage}-t_usuario
-    CODES_TABLE_NAME: ${sls:stage}-t_codes
-    TOKENS_TABLE_NAME: ${sls:stage}-t_tokens
     JWT_SECRET: ${env:JWT_SECRET}
 
 functions:
@@ -63,21 +61,5 @@ resources:
           - AttributeName: tenant_id
             KeyType: HASH
           - AttributeName: email
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
-
-    CodesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:provider.environment.CODES_TABLE_NAME}
-        AttributeDefinitions:
-          - AttributeName: tenant_id
-            AttributeType: S
-          - AttributeName: code
-            AttributeType: S
-        KeySchema:
-          - AttributeName: tenant_id
-            KeyType: HASH
-          - AttributeName: code
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
