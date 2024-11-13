@@ -18,7 +18,8 @@ exports.handler = async (event) => {
           reserv_book_time: libraryData.reserv_book_time,
           reserv_env_time: libraryData.reserv_env_time,
           color: libraryData.color,
-          photo_url: libraryData.photo_url,
+          logo_url: libraryData.logo_url,
+          background_url: libraryData.background_url,
           env_types: libraryData.env_types,
           full_name: libraryData.full_name
         },

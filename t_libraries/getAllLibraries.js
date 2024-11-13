@@ -10,7 +10,7 @@ exports.handler = async (event) => {
     const result = await dynamo.send(
       new ScanCommand({
         TableName: tableName,
-        ProjectionExpression: "tenant_id, photo_url, full_name"
+        ProjectionExpression: "tenant_id, logo_url, full_name"
       })
     );
 
