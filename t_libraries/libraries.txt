@@ -5,7 +5,8 @@
   "content": "#ffffff",
   "sidebar": "#00aaff"
  },
- "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/utec-logo.jpg",
+ "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/utec-logo.jpg",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/utec-background.jpg",
  "reserv_book_time": 4,
  "reserv_env_time": 2,
  "email_suffix": "utec.edu.pe",
@@ -20,7 +21,8 @@
   "content": "#fbfbf0",
   "sidebar": "#800020"
  },
- "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/uni-logo.png",
+ "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/uni-logo.png",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/uni-background.jpg",
  "reserv_book_time": 2,
  "reserv_env_time": 1,
  "email_suffix": "uni.edu.pe",
@@ -35,7 +37,8 @@
   "content": "#f0f0f0",           
   "sidebar": "#ffd966" 
  },
- "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/upn-logo.png",
+ "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/upn-logo.png",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/upn-background.jpeg",
  "reserv_book_time": 3,
  "reserv_env_time": 2,
  "email_suffix": "upn.edu.pe",
@@ -50,7 +53,8 @@
   "content": "#f7f7f7",    
   "sidebar": "#800040"   
  },
- "photo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/unmsm-logo.png",
+ "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/unmsm-logo.png",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/unmsm-background.jpg",
  "reserv_book_time": 2,
  "reserv_env_time": 2,
  "email_suffix": "unmsm.edu.pe",
