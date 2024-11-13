@@ -92,9 +92,9 @@ def lambda_handler(event, context):
         "email": email,
         "firstname": firstname,
         "lastname": lastname,
-        "creationDate": creation_date
-        # "full_name" : tenant_info.full_name,
-        # "color" : tenant_info.color.background,
+        "creationDate": creation_date,
+        "full_name" : tenant_info["body"]["full_name"],
+        "color" : tenant_info["body"]["color"]["background"]
     }
 
     # Email endpoint
@@ -106,6 +106,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': {'message': 'El usuario se registró exitosamente'},
-        't_library': tenant_info['body']
+        'body': {'message': 'El usuario se registró exitosamente'}
     }
