@@ -4,7 +4,7 @@ const path = require('path');
 
 exports.handler = async (event) => {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { email, firstname, lastname, creationDate } = body;
+    const { email, firstname, lastname, creationDate, full_name, color } = body;
 
     // Get Gmail credentials from environment variables
     const gmailUser = process.env.GMAIL_USER;
@@ -19,7 +19,9 @@ exports.handler = async (event) => {
         .replace('{{firstname}}', firstname)
         .replace('{{lastname}}', lastname)
         .replace('{{email}}', email)
-        .replace('{{creationDate}}', creationDate);
+        .replace('{{creationDate}}', creationDate)
+        .replace('{{full_name}}', full_name)
+        .replace('{{color}}', color);
 
     // Gmail SMTP configuration
     const transporter = nodemailer.createTransport({

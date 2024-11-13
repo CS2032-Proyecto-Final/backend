@@ -1,0 +1,157 @@
+{
+  "/home/m41k1/Documents/UTEC/2024-2/Cloud-Computing/proyecto_final/backend/t_users": {
+    "versionSfCore": null,
+    "versionFramework": "4.4.7",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeServiceName": null,
+    "servicePath": "/home/m41k1/Documents/UTEC/2024-2/Cloud-Computing/proyecto_final/backend/t_users",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "bibliokuna",
+      "service": "api-users",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.12",
+        "memorySize": 1024,
+        "timeout": 30,
+        "iam": {
+          "role": "${env:LAB_ROLE_ARN}"
+        },
+        "environment": {
+          "USERS_TABLE_NAME": "dev-t_usuario",
+          "CODES_TABLE_NAME": "dev-t_codes",
+          "TOKENS_TABLE_NAME": "<REDACTED>",
+          "JWT_SECRET": "<REDACTED>"
+        }
+      },
+      "functions": {
+        "RegisterUser": {
+          "handler": "RegisterUser.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "auth/register",
+                "method": "post",
+                "cors": true,
+                "integration": "lambda"
+              }
+            }
+          ]
+        },
+        "Login": {
+          "handler": "Login.lambda_handler",
+          "package": {
+            "include": [
+              "./**"
+            ]
+          },
+          "events": [
+            {
+              "http": {
+                "path": "auth/login",
+                "method": "post",
+                "cors": true,
+                "integration": "lambda"
+              }
+            }
+          ]
+        },
+        "ValidateToken": "<REDACTED>"
+      },
+      "resources": {
+        "Resources": {
+          "UsersTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "${self:provider.environment.USERS_TABLE_NAME}",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "tenant_id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "email",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "tenant_id",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "email",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          },
+          "CodesTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "${self:provider.environment.CODES_TABLE_NAME}",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "tenant_id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "code",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "tenant_id",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "code",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          }
+        }
+      }
+    },
+    "serviceRawFile": "org: bibliokuna\r\nservice: api-users\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  memorySize: 1024\r\n  timeout: 30\r\n  iam:\r\n    role: ${env:LAB_ROLE_ARN}\r\n  environment:\r\n    USERS_TABLE_NAME: ${sls:stage}-t_usuario\r\n    CODES_TABLE_NAME: ${sls:stage}-t_codes\r\n    TOKENS_TABLE_NAME: ${sls:stage}-t_tokens\r\n    JWT_SECRET: ${env:JWT_SECRET}\r\n\r\nfunctions:\r\n  RegisterUser:\r\n    handler: RegisterUser.lambda_handler\r\n    events:\r\n      - http:\r\n          path: auth/register\r\n          method: post\r\n          cors: true\r\n          integration: lambda\r\n\r\n  Login:\r\n    handler: Login.lambda_handler\r\n    package:\r\n      include:\r\n        - ./**\r\n    events:\r\n      - http:\r\n          path: auth/login\r\n          method: post\r\n          cors: true\r\n          integration: lambda\r\n\r\n  ValidateToken:\r\n    handler: ValidateToken.lambda_handler\r\n    package:\r\n      include:\r\n        - ./**\r\n    events:\r\n      - http:\r\n          path: tokens/validate\r\n          method: post\r\n          cors: true\r\n          integration: lambda\r\n\r\nresources:\r\n  Resources:\r\n    UsersTable:\r\n      Type: AWS::DynamoDB::Table\r\n      Properties:\r\n        TableName: ${self:provider.environment.USERS_TABLE_NAME}\r\n        AttributeDefinitions:\r\n          - AttributeName: tenant_id\r\n            AttributeType: S\r\n          - AttributeName: email\r\n            AttributeType: S\r\n        KeySchema:\r\n          - AttributeName: tenant_id\r\n            KeyType: HASH\r\n          - AttributeName: email\r\n            KeyType: RANGE\r\n        BillingMode: PAY_PER_REQUEST\r\n\r\n    CodesTable:\r\n      Type: AWS::DynamoDB::Table\r\n      Properties:\r\n        TableName: ${self:provider.environment.CODES_TABLE_NAME}\r\n        AttributeDefinitions:\r\n          - AttributeName: tenant_id\r\n            AttributeType: S\r\n          - AttributeName: code\r\n            AttributeType: S\r\n        KeySchema:\r\n          - AttributeName: tenant_id\r\n            KeyType: HASH\r\n          - AttributeName: code\r\n            KeyType: RANGE\r\n        BillingMode: PAY_PER_REQUEST\r\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "error": {
+      "message": "Cannot resolve '${env:LAB_ROLE_ARN}' variable at 'provider.iam.role'. No value is available for this variable, and no default value was provided. Please check your variable definitions or provide a default value.",
+      "stack": "Error: Cannot resolve '${env:LAB_ROLE_ARN}' variable at 'provider.iam.role'. No value is available for this variable, and no default value was provided. Please check your variable definitions or provide a default value.\n    at _ResolverManager.resolve (file:///home/m41k1/.serverless/releases/4.4.7/package/dist/sf-core.js:693:56026)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async #handlePlaceholderNode (file:///home/m41k1/.serverless/releases/4.4.7/package/dist/sf-core.js:693:54456)\n    at async file:///home/m41k1/.serverless/releases/4.4.7/package/dist/sf-core.js:693:52448\n    at async processNodeAndHandleCompletion (file:///home/m41k1/.serverless/releases/4.4.7/package/dist/sf-core.js:693:43090)",
+      "code": "MISSING_VARIABLE_RESULT"
+    },
+    "machineId": "9dbf55085067892eaa9ad338dd547f59",
+    "stage": "dev",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "8ebc7850-5ac8-4863-b10e-089896c395ec",
+    "orgName": "bibliokuna",
+    "userId": "LYtMQ97hGz6gKGJC92",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "bibliokuna",
+    "subscription": null,
+    "userEmail": "bibliokuna@gmail.com",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
