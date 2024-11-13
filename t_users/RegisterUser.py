@@ -104,5 +104,6 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': {'message': 'El usuario se registró exitosamente'}
+        'body': {'message': 'El usuario se registró exitosamente'},
+        't_library' : tenant_info
     }
