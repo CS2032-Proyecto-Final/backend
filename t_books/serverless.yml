@@ -1,4 +1,4 @@
-org: ginodaza
+org: bibliokuna
 service: api-books
 
 provider:
@@ -16,27 +16,29 @@ functions:
     handler: CreateBook.lambda_handler
     events:
       - http:
-          path: /books
+          path: /books/create/single
           method: post
           cors: true
           integration: lambda
 
-  getBooks:
-    handler: GetBooks.lambda_handler
+  createBooks:
+    handler: CreateBooks.lambda_handler
     events:
       - http:
-          path: /books
-          method: get
+          path: /books/create/books
+          method: post
           cors: true
           integration: lambda
+
   getBook:
     handler: GetBook.lambda_handler
     events:
       - http:
-          path: /book
+          path: /books/{isbn}
           method: get
           cors: true
           integration: lambda
+
   searchBooks:
     handler: SearchBooks.lambda_handler
     events:
@@ -57,11 +59,11 @@ resources:
             AttributeType: S
           - AttributeName: isbn
             AttributeType: S
-          - AttributeName: title
+          - AttributeName: title_index
             AttributeType: S
-          - AttributeName: author_name
+          - AttributeName: author_name_index
             AttributeType: S
-          - AttributeName: author_lastname
+          - AttributeName: author_lastname_index
             AttributeType: S
         KeySchema:
           - AttributeName: tenant_id
@@ -73,7 +75,7 @@ resources:
             KeySchema:
               - AttributeName: tenant_id
                 KeyType: HASH
-              - AttributeName: title
+              - AttributeName: title_index
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
@@ -81,7 +83,7 @@ resources:
             KeySchema:
               - AttributeName: tenant_id
                 KeyType: HASH
-              - AttributeName: author_name
+              - AttributeName: author_name_index
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
@@ -89,7 +91,7 @@ resources:
             KeySchema:
               - AttributeName: tenant_id
                 KeyType: HASH
-              - AttributeName: author_lastname
+              - AttributeName: author_lastname_index
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL

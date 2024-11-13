@@ -25,12 +25,14 @@ def lambda_handler(event, context):
 
     # Intentar obtener los favoritos
     try:
-        api_url = f"https://wb5hznomeh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
+        api_url = f"https://9vaeq95yoh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
         with urllib.request.urlopen(api_url) as response:
             favorites_data = json.load(response)
-            favorite_items = favorites_data.get("body", [])
-            favorite_isbns = {item['isbn'] for item in favorite_items if item['isFavorite']}
-            favorites_present = bool(favorite_items)
+            # Asegúrate de acceder a la estructura correcta
+            if "body" in favorites_data and isinstance(favorites_data["body"], list):
+                favorite_items = favorites_data["body"]
+                favorite_isbns = {item['isbn'] for item in favorite_items if item['isFavorite']}
+                favorites_present = bool(favorite_items)
     except Exception as e:
         print(f"Error al obtener favoritos: {e}")
         favorites_present = False  # Indicar que no hay favoritos disponibles en caso de error
@@ -50,47 +52,47 @@ def lambda_handler(event, context):
         # Búsqueda por combinación de título, nombre y apellido del autor
         query_params.update({
             'IndexName': 'title-index',
-            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title),
-            'FilterExpression': Key('author_name').begins_with(author_name) & Key('author_lastname').begins_with(author_lastname)
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title_index').begins_with(title),
+            'FilterExpression': Key('author_name_index').begins_with(author_name) & Key('author_lastname_index').begins_with(author_lastname)
         })
     elif title and author_name:
         # Búsqueda por título y nombre del autor
         query_params.update({
             'IndexName': 'title-index',
-            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title),
-            'FilterExpression': Key('author_name').begins_with(author_name)
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title_index').begins_with(title),
+            'FilterExpression': Key('author_name_index').begins_with(author_name)
         })
     elif title and author_lastname:
         # Búsqueda por título y apellido del autor
         query_params.update({
             'IndexName': 'title-index',
-            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title),
-            'FilterExpression': Key('author_lastname').begins_with(author_lastname)
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title_index').begins_with(title),
+            'FilterExpression': Key('author_lastname_index').begins_with(author_lastname)
         })
     elif author_name and author_lastname:
         # Búsqueda por nombre y apellido del autor
         query_params.update({
             'IndexName': 'author_name-index',
-            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_name').begins_with(author_name),
-            'FilterExpression': Key('author_lastname').begins_with(author_lastname)
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_name_index').begins_with(author_name),
+            'FilterExpression': Key('author_lastname_index').begins_with(author_lastname)
         })
     elif title:
         # Búsqueda solo por título
         query_params.update({
             'IndexName': 'title-index',
-            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title').begins_with(title)
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('title_index').begins_with(title)
         })
     elif author_name:
         # Búsqueda solo por nombre del autor
         query_params.update({
             'IndexName': 'author_name-index',
-            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_name').begins_with(author_name)
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_name_index').begins_with(author_name)
         })
     elif author_lastname:
         # Búsqueda solo por apellido del autor
         query_params.update({
             'IndexName': 'author_lastname-index',
-            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_lastname').begins_with(author_lastname)
+            'KeyConditionExpression': Key('tenant_id').eq(tenant_id) & Key('author_lastname_index').begins_with(author_lastname)
         })
     else:
         # Búsqueda general para todos los libros bajo el `tenant_id`

@@ -1,0 +1,78 @@
+org: bibliokuna
+service: api-environments
+
+provider:
+  name: aws
+  runtime: python3.12
+  memorySize: 1024
+  timeout: 30
+  iam:
+    role: ${env:LAB_ROLE_ARN}
+  environment:
+    TABLE_NAME: ${sls:stage}-t_environments
+
+functions:
+  getEnvironmentList:
+    handler: GetEnvironment.lambda_handler
+    events:
+      - http:
+          path: /environment/list
+          method: get
+          cors: true
+          integration: lambda
+
+  updateEnvironmentStatus:
+    handler: UpdateEnvironment.lambda_handler
+    events:
+      - http:
+          path: /environment/status
+          method: patch
+          cors: true
+          integration: lambda
+
+  getEnvironmentInfo:
+    handler: GetEnvironmentInfo.lambda_handler
+    events:
+      - http:
+          path: /environment/info
+          method: get
+          cors: true
+          integration: lambda
+
+  resetEnvironmentStatus:
+    handler: ResetEnvironmentStatus.lambda_handler
+    events:
+      - http:
+          path: /environment/reset_status
+          method: patch
+          cors: true
+          integration: lambda
+
+resources:
+  Resources:
+    TablaEnvironments:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: type#name#hour
+            AttributeType: S
+          - AttributeName: status
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: type#name#hour
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: StatusIndex
+            KeySchema:
+              - AttributeName: tenant_id
+                KeyType: HASH
+              - AttributeName: status
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST

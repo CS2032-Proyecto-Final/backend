@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     password = body['password']
     tenant_id = body['tenant_id']
 
-    api_url = f"https://nbdn1lp357.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
+    api_url = f"https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(api_url) as response:
         tenant_info = json.loads(response.read())
@@ -23,8 +23,8 @@ def lambda_handler(event, context):
     firstname = ""
     lastname = ""
 
-    if tenant_info["email_suffix"] != "*":
-       if tenant_info["email_suffix"] != email.split('@')[1]:
+    if tenant_info["body"]["email_suffix"] != "*":
+       if tenant_info["body"]["email_suffix"] != email.split('@')[1]:
            return {
                'statusCode': 403,
                'body': {'error': 'Usuario no válido'}
