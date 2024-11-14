@@ -96,7 +96,7 @@ resources:
                 KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"
-          - IndexName: "status_LSI_for_partition_key"
+          - IndexName: "status_LSI_for"
             KeySchema:
               - AttributeName: "tenant_id#email"
                 KeyType: "HASH"
@@ -104,25 +104,9 @@ resources:
                 KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"
-          - IndexName: "status_LSI_for_GSI"
-            KeySchema:
-              - AttributeName: "tenant_id#type"
-                KeyType: "HASH"
-              - AttributeName: "status"
-                KeyType: "RANGE"
-            Projection:
-              ProjectionType: "ALL"
-          - IndexName: "max_return_date-status_LSI_for_partition_key"
+          - IndexName: "max_return_date-status_LSI"
             KeySchema:
               - AttributeName: "tenant_id#email"
-                KeyType: "HASH"
-              - AttributeName: "max_return_date#status"
-                KeyType: "RANGE"
-            Projection:
-              ProjectionType: "ALL"
-          - IndexName: "max_return_date-status_LSI_for_GSI"
-            KeySchema:
-              - AttributeName: "tenant_id#type"
                 KeyType: "HASH"
               - AttributeName: "max_return_date#status"
                 KeyType: "RANGE"
