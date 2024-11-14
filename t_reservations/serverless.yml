@@ -96,7 +96,7 @@ resources:
                 KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"
-          - IndexName: "status_LSI_for"
+          - IndexName: "status_LSI"
             KeySchema:
               - AttributeName: "tenant_id#email"
                 KeyType: "HASH"
