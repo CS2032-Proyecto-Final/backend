@@ -1,0 +1,132 @@
+org: bibliokuna
+service: api-reservations
+
+provider:
+  name: aws
+  runtime: python3.12
+  memorySize: 1024
+  timeout: 30
+  iam:
+    role: ${env:LAB_ROLE_ARN}
+  environment:
+    RESERVATIONS_TABLE_NAME: ${sls:stage}-t_reservations
+
+
+functions:
+  GetBookReservations:
+    handler: GetBookReservations.lambda_handler
+    events:
+      - http:
+          path: reservation/book
+          method: get
+          cors: true
+          integration: lambda
+
+   GetEnvironmentReservations:
+    handler: GetEnvironmentReservations.lambda_handler
+    events:
+      - http:
+          path: reservation/environment
+          method: get
+          cors: true
+          integration: lambda
+
+  ReserveBook:
+    handler: ReserveBook.lambda_handler
+    events:
+      - http:
+          path: reservation/book
+          method: post
+          cors: true
+          integration: lambda
+
+  ReserveEnvironment:
+    handler: ReserveEnvironment.lambda_handler
+    events:
+      - http:
+          path: reservation/environment
+          method: post
+          cors: true
+          integration: lambda
+
+resources:
+  Resources:
+    ReservationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.RESERVATIONS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id#email
+            AttributeType: S
+          - AttributeName: type
+            AttributeType: S
+          - AttributeName: res_id
+            AttributeType: S
+          - AttributeName: status
+            AttributeType: S
+          - AttributeName: tenant_id#type
+            AttributeType: S
+          - AttributeName: email#status
+            AttributeType: S
+          - AttributeName: max_return_date#status
+            AttributeType: S
+        
+        KeySchema:
+          - AttributeName: tenant_id#email
+            KeyType: HASH
+          - AttributeName: type
+            KeyType: RANGE
+
+        GlobalSecondaryIndexes:
+          - IndexName: "tenant_id#type_GSI"
+            KeySchema:
+              - AttributeName: "tenant_id#type"
+                KeyType: "HASH"
+              - AttributeName: "email#status"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+
+        LocalSecondaryIndexes:
+          - IndexName: "res_id_LSI"
+            KeySchema:
+              - AttributeName: "tenant_id#email"
+                KeyType: "HASH"
+              - AttributeName: "res_id"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+          - IndexName: "status_LSI_for_partition_key"
+            KeySchema:
+              - AttributeName: "tenant_id#email"
+                KeyType: "HASH"
+              - AttributeName: "status"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+          - IndexName: "status_LSI_for_GSI"
+            KeySchema:
+              - AttributeName: "tenant_id#type"
+                KeyType: "HASH"
+              - AttributeName: "status"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+          - IndexName: "max_return_date#status_LSI_for_partition_key"
+            KeySchema:
+              - AttributeName: "tenant_id#email"
+                KeyType: "HASH"
+              - AttributeName: "max_return_date#status"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+           - IndexName: "max_return_date#status_LSI_for_GSI"
+            KeySchema:
+              - AttributeName: "tenant_id#type"
+                KeyType: "HASH"
+              - AttributeName: "max_return_date#status"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+
+        BillingMode: PAY_PER_REQUEST
