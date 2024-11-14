@@ -51,7 +51,7 @@ def lambda_handler(event, context):
     if 'Item' not in response:
         return {
             'statusCode': 403,
-            'body': {'error': 'Item not in response'}
+            'body': {'error': 'Usuario y/o contraseña incorrectos'}
         }
     
     stored_hashed_password = response['Item']['password']
