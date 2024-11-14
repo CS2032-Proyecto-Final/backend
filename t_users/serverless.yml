@@ -9,7 +9,7 @@ provider:
   iam:
     role: ${env:LAB_ROLE_ARN}
   environment:
-    USERS_TABLE_NAME: ${sls:stage}-t_usuario
+    USERS_TABLE_NAME: ${sls:stage}-t_users
     JWT_SECRET: ${env:JWT_SECRET}
 
 functions:
