@@ -22,7 +22,7 @@ functions:
           cors: true
           integration: lambda
 
-   GetEnvironmentReservations:
+  GetEnvironmentReservations:
     handler: GetEnvironmentReservations.lambda_handler
     events:
       - http:
