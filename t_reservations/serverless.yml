@@ -74,7 +74,7 @@ resources:
         KeySchema:
           - AttributeName: tenant_id#email
             KeyType: HASH
-          - AttributeName: type
+          - AttributeName: res_id
             KeyType: RANGE
 
         GlobalSecondaryIndexes:
@@ -88,11 +88,11 @@ resources:
               ProjectionType: "ALL"
 
         LocalSecondaryIndexes:
-          - IndexName: "res_id_LSI"
+          - IndexName: "type_LSI"
             KeySchema:
               - AttributeName: "tenant_id#email"
                 KeyType: "HASH"
-              - AttributeName: "res_id"
+              - AttributeName: "type"
                 KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"
