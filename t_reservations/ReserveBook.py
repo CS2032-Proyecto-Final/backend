@@ -20,7 +20,7 @@ def lambda_handler(event, context):
         "token": token
     }
 
-    data_json = json.dumps(data)
+    data_json = json.dumps(data).encode('utf-8')
 
     request = urllib.request.Request(MU_url, data=data_json, method="POST")
 
