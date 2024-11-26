@@ -22,6 +22,7 @@ def lambda_handler(event, context):
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
 
     gsi = "tenant_id-type_GSI"
+    lsi = "type_LSI"
 
     if status:
         response = table.query(
@@ -30,6 +31,7 @@ def lambda_handler(event, context):
         )
     else:
         response = table.query(
+            IndexName=lsi,
             KeyConditionExpression=Key('tenant_id#email').eq(tenant_id + "#" + email) & Key('type').eq("book")
         )
 
