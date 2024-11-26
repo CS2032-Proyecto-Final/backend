@@ -11,8 +11,33 @@ def lambda_handler(event, context):
 
     # por ahora se pasa el tenant y email por el body, en realidad se conoce por el token
 
-    tenant_id = body['tenant_id']
-    email = body['email']
+    headers = event['headers']
+    token = headers['Authorization']
+
+    MU_url = f"https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/dev/tokens/validate"
+
+    data = {
+        "token": token
+    }
+
+    data_json = json.dumps(data)
+
+    request = urllib.request.Request(MU_url, data=data_json, method="POST")
+
+    with urllib.request.urlopen(request) as response:
+        user_response = json.loads(response.read())
+
+    if(user_response['statusCode'] == 403):
+        return {
+            "statusCode": 403,
+            "body": {
+                "message": "Token no válido"
+            }
+        }
+
+    tenant_id = user_response['body']['tenant_id']
+    email = user_response['body']['email']
+
     isbn = body['isbn']
 
     dynamodb = boto3.resource('dynamodb')
@@ -30,6 +55,14 @@ def lambda_handler(event, context):
     type = "book"
     res_id = str(uuid.uuid4())
     status = "pending"
+
+    if not book_info['body']['books']:
+        return {
+        "statusCode": 404,
+        "body": {
+            "message": "El libro a reservar no existe"
+        }
+    }
     
     author_name = book_info['body']['books'][0]['author_name']
     author_lastname = book_info['body']['books'][0]['author_lastname']
