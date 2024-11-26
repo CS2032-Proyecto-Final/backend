@@ -8,9 +8,7 @@ from datetime import datetime, timedelta
 def lambda_handler(event, context):
 
     body = event['body']
-
-    # por ahora se pasa el tenant y email por el body, en realidad se conoce por el token
-
+    
     headers = event['headers']
     token = headers['Authorization']
 
