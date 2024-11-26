@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
 
-    MB_url = f"https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/get?tenant_id={tenant_id}&isbn={isbn}"
+    MB_url = f"https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/search?tenant_id={tenant_id}&email={email}&page=1&limit=1&isbn={isbn}"
     ML_url = f"https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(ML_url) as response:
@@ -31,8 +31,9 @@ def lambda_handler(event, context):
     res_id = str(uuid.uuid4())
     status = "pending"
     
-    author = book_info['body']['author']
-    title = book_info['body']['title']
+    author_name = book_info['body']['books'][0]['author_name']
+    author_lastname = book_info['body']['books'][0]['author_lastname']
+    title = book_info['body']['books'][0]['title']
     pickup_date = datetime.now().strftime('%d-%m-%Y')
     max_return_date = (datetime.now() + timedelta(days=tenant_info['body']['reserv_book_time'])).strftime('%d-%m-%Y')
 
@@ -46,7 +47,8 @@ def lambda_handler(event, context):
         "max_return_date#status": max_return_date + "#" + status,
 
         "isbn": isbn,
-        "author": author,
+        "author_name": author_name,
+        "author_lastname": author_lastname,
         "title": title,
         "pickup_date": pickup_date,
         "max_return_date": max_return_date
