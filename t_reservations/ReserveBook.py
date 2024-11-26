@@ -24,6 +24,8 @@ def lambda_handler(event, context):
 
     request = urllib.request.Request(MU_url, data=data_json, method="POST")
 
+    request.add_header("Content-Type", "application/json")
+
     with urllib.request.urlopen(request) as response:
         user_response = json.loads(response.read())
 
