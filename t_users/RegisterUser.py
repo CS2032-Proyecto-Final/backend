@@ -101,8 +101,12 @@ def lambda_handler(event, context):
         "color" : tenant_info["body"]["color"]["sidebar"]
     }
 
+    notifications_url = os.environ.get("NOTIFICATIONS_URL")
+    if not notifications_url:
+        raise Exception("NOTIFICATIONS_URL environment variable not set")
+
     # Email endpoint
-    email_endpoint = "https://epa4o89cfl.execute-api.us-east-1.amazonaws.com/dev/emails/signUp"
+    email_endpoint = f"{notifications_url}/emails/signUp"
 
     # Asynchronously send the email
     with ThreadPoolExecutor() as executor:
