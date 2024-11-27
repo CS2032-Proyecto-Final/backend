@@ -1,20 +1,13 @@
 import boto3
 import os
-import json
+from boto3.dynamodb.conditions import Key
 
 def lambda_handler(event, context):
     # Entrada desde el evento
-    tenant_id = event['query'].get('tenant_id')
-    env_type = event['query'].get('type')
-    env_name = event['query'].get('env_name')
-    hour = event['query'].get('hour')
-
-    # Validación de parámetros
-    if not tenant_id or not env_type or not env_name or not hour:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({"message": "All parameters are required"})
-        }
+    tenant_id = event['query']['tenant_id']
+    env_type = event['query']['type']
+    env_name = event['query']['env_name']
+    hour = event['query']['hour']
 
     # Configuración DynamoDB
     dynamodb = boto3.resource('dynamodb')
@@ -32,10 +25,12 @@ def lambda_handler(event, context):
     if "Item" in response:
         return {
             "statusCode": 200,
-            "body": json.dumps(response['Item'])
+            "body": response['Item'] 
         }
     else:
         return {
             "statusCode": 404,
-            "body": json.dumps({"message": "Env not found"})
+            "body": {
+                "message": "Env not found"
+            }
         }

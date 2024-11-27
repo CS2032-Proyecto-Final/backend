@@ -7,15 +7,6 @@ def lambda_handler(event, context):
     tenant_id = event['query']['tenant_id']
     env_type = event['query']['type']
 
-    # Validación de parámetros
-    if not tenant_id or not env_type:
-        return {
-            "statusCode": 400,
-            "body": {
-                "message": "tenant_id and type are required"
-            }
-        }
-
     # Configuración DynamoDB
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ['TABLE_NAME'])
@@ -39,6 +30,6 @@ def lambda_handler(event, context):
     return {
         "statusCode": 200,
         "body": {
-            environments
+            "environments": environments
         }
     }
