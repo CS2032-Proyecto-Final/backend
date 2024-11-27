@@ -1,30 +1,29 @@
 import boto3
 import os
-from boto3.dynamodb.conditions import Key
 import json
 
 def lambda_handler(event, context):
     # Obtener parámetros de entrada desde query
     tenant_id = event['query']['tenant_id']
-    isbns = event['query']['isbns']
-    isbns = json.loads(isbns)
+    isbns = json.loads(event['query']['isbns'])
 
     # Conexión a DynamoDB
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ["TABLE_NAME"])
+    table_name = os.environ["TABLE_NAME"]
 
-    # Consultar DynamoDB para cada ISBN
-    books = []
-    for isbn in isbns:
-        response = table.query(
-            KeyConditionExpression=Key('tenant_id').eq(tenant_id) & Key('isbn').eq(isbn)
-        )
-        items = response.get('Items', [])
-        if items:
-            books.append(items[0])
+    # Crear solicitudes para batch_get_item
+    keys = [{'tenant_id': tenant_id, 'isbn': isbn} for isbn in isbns]
+    response = dynamodb.batch_get_item(
+        RequestItems={
+            table_name: {
+                'Keys': keys
+            }
+        }
+    )
 
     # Retornar los libros encontrados
+    books = response.get('Responses', {}).get(table_name, [])
     return {
         'statusCode': 200,
-        'body': json.dumps(books)  # Retornar la lista de libros
+        'body': json.dumps(books)
     }

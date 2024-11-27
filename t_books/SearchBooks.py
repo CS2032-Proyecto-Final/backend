@@ -23,9 +23,13 @@ def lambda_handler(event, context):
     favorite_isbns = set()
     favorites_present = False
 
+    favorites_url = os.environ.get("FAVORITES_URL")
+    if not favorites_url:
+        raise Exception("FAVORITES_URL environment variable not set")
+
     # Intentar obtener los favoritos
     try:
-        api_url = f"https://9vaeq95yoh.execute-api.us-east-1.amazonaws.com/dev/favorite/my/actual?tenant_id={tenant_id}&email={email}"
+        api_url = f"{favorites_url}/favorite/my/actual?tenant_id={tenant_id}&email={email}"
         with urllib.request.urlopen(api_url) as response:
             favorites_data = json.load(response)
             # Asegúrate de acceder a la estructura correcta
