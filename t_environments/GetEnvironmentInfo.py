@@ -18,7 +18,7 @@ def lambda_handler(event, context):
 
     # Configuración DynamoDB
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
+    table = dynamodb.Table(os.environ['TABLE_NAME'])
     
     # Consulta en DynamoDB
     response = table.get_item(

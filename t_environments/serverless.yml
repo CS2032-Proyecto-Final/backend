@@ -13,7 +13,7 @@ provider:
 
 functions:
   getEnvironmentList:
-    handler: GetEnvironment.lambda_handler
+    handler: GetEnvironments.lambda_handler
     events:
       - http:
           path: /environment/list
@@ -40,10 +40,10 @@ functions:
           integration: lambda
 
   resetEnvironmentStatus:
-    handler: ResetEnvironmentStatus.lambda_handler
+    handler: ResetEnvironmentsStatus.lambda_handler
     events:
       - http:
-          path: /environment/reset_status
+          path: /environment/reset_status_all
           method: patch
           cors: true
           integration: lambda
