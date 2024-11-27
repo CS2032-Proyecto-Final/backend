@@ -62,7 +62,7 @@ def lambda_handler(event, context):
         }
     }
 
-    if env_info['status'] != "available":
+    if env_info['body']['status'] != "available":
         return {
             "statusCode": 406,
             "body": {
