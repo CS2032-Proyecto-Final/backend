@@ -1,18 +1,19 @@
 import boto3
 import os
-import json
 from boto3.dynamodb.conditions import Key
 
 def lambda_handler(event, context):
     # Entrada desde el evento
-    tenant_id = event['query'].get('tenant_id')
-    env_type = event['query'].get('type')
+    tenant_id = event['query']['tenant_id']
+    env_type = event['query']['type']
 
     # Validación de parámetros
     if not tenant_id or not env_type:
         return {
             "statusCode": 400,
-            "body": json.dumps({"message": "tenant_id and type are required"})
+            "body": {
+                "message": "tenant_id and type are required"
+            }
         }
 
     # Configuración DynamoDB
@@ -37,5 +38,7 @@ def lambda_handler(event, context):
     # Respuesta
     return {
         "statusCode": 200,
-        "body": json.dumps({"environments": environments})
+        "body": {
+            "environments": environments
+        }
     }
