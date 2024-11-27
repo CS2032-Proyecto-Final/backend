@@ -21,7 +21,7 @@ def lambda_handler(event, context):
     
     # Consulta en DynamoDB
     response = table.query(
-        KeyConditionExpression=Key('tenant_id').eq(tenant_id) & Key('type').eq(env_type)
+        KeyConditionExpression=Key('tenant_id').eq(tenant_id) & Key('type#name#hour').begins_with(env_type)
     )
 
     environments = [
