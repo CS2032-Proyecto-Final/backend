@@ -40,12 +40,13 @@ def lambda_handler(event, context):
 
     env_type = body['type']
     name = body['name']
-    hour = str(body['hour']).zfill(2)
+    hour = body['hour']
+    formatted_hour = str(hour).zfill(2)
 
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
 
-    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/info?tenant_id={tenant_id}&type={env_type}&env_name={name}&hour={hour}"
+    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/info?tenant_id={tenant_id}&type={env_type}&env_name={name}&hour={formatted_hour}"
     ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(ML_url) as response:
@@ -83,7 +84,7 @@ def lambda_handler(event, context):
     data = {
         "type": env_type,
         "name": name,
-        "hour": hour,
+        "hour": formatted_hour,
         "status": "unavailable"
     }
 
@@ -95,6 +96,7 @@ def lambda_handler(event, context):
 
     with urllib.request.urlopen(request) as response:
         update_response = json.loads(response.read())
+        print(update_response)
 
 
     reservation = {
