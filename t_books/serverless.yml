@@ -45,7 +45,7 @@ functions:
     events:
       - http:
           path: /books/details
-          method: post
+          method: get
           cors: true
           integration: lambda
 

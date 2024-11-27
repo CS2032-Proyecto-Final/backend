@@ -1,6 +1,14 @@
 
 [Users]
 
-RegisterUser: 
-Login:
-ValidateToken:
+RegisterUser: POST - https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/dev/auth/register
+Login: POST - https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/dev/auth/login
+ValidateToken: POST - https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/dev/tokens/validate
+
+
+[Books]
+
+CreateBook: POST - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/create/single
+CreateBooks: POST - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/create/books
+SearchBooks: GET - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/search
+GetBooksByIsbns: POST - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/details
