@@ -12,14 +12,11 @@ def hash_password(password):
 
 def send_email_async(email_payload, email_endpoint):
     try:
-        # Convert the email payload to JSON
         data = json.dumps(email_payload).encode('utf-8')
 
-        # Create a request object
         req = urllib.request.Request(email_endpoint, data=data, method="POST")
         req.add_header('Content-Type', 'application/json')
 
-        # Send the request
         with urllib.request.urlopen(req) as response:
             if response.status != 200:
                 print(f"Error sending email: {response.read().decode('utf-8')}")
@@ -87,7 +84,6 @@ def lambda_handler(event, context):
         }
     )
 
-    # Prepare the payload for the notification email
     email_payload = {
         "email": email,
         "firstname": firstname,
@@ -100,7 +96,6 @@ def lambda_handler(event, context):
     # Email endpoint
     email_endpoint = "https://epa4o89cfl.execute-api.us-east-1.amazonaws.com/dev/emails/signUp"
 
-    # Asynchronously send the email
     with ThreadPoolExecutor() as executor:
         executor.submit(send_email_async, email_payload, email_endpoint)
 
