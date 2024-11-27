@@ -88,7 +88,7 @@ def lambda_handler(event, context):
         "status": "unavailable"
     }
 
-    data_json = json.dumps(data).encode('utf-8')
+    data_json = json.dumps(json.dumps(data)).encode('utf-8')
 
     request = urllib.request.Request(ME_url, data=data_json, method="PATCH")
 
