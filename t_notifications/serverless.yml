@@ -36,7 +36,7 @@ resources:
     EmailsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: TableName: ${self:provider.environment.TABLE_NAME}
+        TableName: ${self:provider.environment.TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: tenant_id
             AttributeType: S
