@@ -76,7 +76,6 @@ def lambda_handler(event, context):
     date = datetime.now().strftime('%d-%m-%Y')
     capacity = env_info['body']['capacity']
 
-
     # Cambiar el estado del env a unavailable
 
     ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/status?tenant_id={tenant_id}"
@@ -90,7 +89,7 @@ def lambda_handler(event, context):
 
     data_json = json.dumps(data).encode('utf-8')
 
-    request = urllib.request.Request(MU_url, data=data_json, method="PATCH")
+    request = urllib.request.Request(ME_url, data=data_json, method="PATCH")
 
     request.add_header("Content-Type", "application/json")
 
