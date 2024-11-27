@@ -12,7 +12,7 @@ def lambda_handler(event, context):
     headers = event['headers']
     token = headers['Authorization']
 
-    MU_url = f"https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/dev/tokens/validate"
+    MU_url = f"{os.environ["USERS_URL"]}/tokens/validate"
 
     data = {
         "token": token
@@ -45,8 +45,8 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
 
-    ME_url = f"https://---.execute-api.us-east-1.amazonaws.com/dev/environment/info?tenant_id={tenant_id}&type={env_type}&name={name}&hour={hour}"
-    ML_url = f"https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
+    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/info?tenant_id={tenant_id}&type={env_type}&name={name}&hour={hour}"
+    ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(ML_url) as response:
         tenant_info = json.loads(response.read())
@@ -79,7 +79,7 @@ def lambda_handler(event, context):
 
     # Cambiar el estado del env a unavailable
 
-    ME_url = f"https://---.execute-api.us-east-1.amazonaws.com/dev/environment/status?tenant_id={tenant_id}"
+    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/status?tenant_id={tenant_id}"
 
     data = {
         "type": env_type,

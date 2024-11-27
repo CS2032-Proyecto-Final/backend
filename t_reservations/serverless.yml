@@ -10,6 +10,10 @@ provider:
     role: ${env:LAB_ROLE_ARN}
   environment:
     RESERVATIONS_TABLE_NAME: ${sls:stage}-t_reservations
+    USERS_URL: https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/${sls:stage}
+    BOOKS_URL: https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/${sls:stage}
+    LIBRARIES_URL: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/${sls:stage}
+    ENVIRONMENTS_URL: https://8zm33o5vt7.execute-api.us-east-1.amazonaws.com/${sls:stage}
 
 
 functions:

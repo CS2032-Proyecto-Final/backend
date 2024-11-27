@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     headers = event['headers']
     token = headers['Authorization']
 
-    MU_url = f"https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/dev/tokens/validate"
+    MU_url = f"{os.environ["USERS_URL"]}/tokens/validate"
 
     data = {
         "token": token

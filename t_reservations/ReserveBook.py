@@ -12,7 +12,7 @@ def lambda_handler(event, context):
     headers = event['headers']
     token = headers['Authorization']
 
-    MU_url = f"https://n2tqx1stl1.execute-api.us-east-1.amazonaws.com/dev/tokens/validate"
+    MU_url = f"{os.environ["USERS_URL"]}/tokens/validate"
 
     data = {
         "token": token
@@ -43,8 +43,8 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
 
-    MB_url = f"https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/search?tenant_id={tenant_id}&email={email}&page=1&limit=1&isbn={isbn}"
-    ML_url = f"https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
+    MB_url = f"{os.environ["BOOKS_URL"]}/books/search?tenant_id={tenant_id}&email={email}&page=1&limit=1&isbn={isbn}"
+    ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(ML_url) as response:
         tenant_info = json.loads(response.read())
