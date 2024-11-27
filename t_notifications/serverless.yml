@@ -7,19 +7,20 @@ provider:
   memorySize: 1024
   timeout: 30
   iam:
-    role: ${env:LAB_ROLE_ARN} 
+    role: ${env:LAB_ROLE_ARN}
   environment:
-    GMAIL_USER: bibliokuna@gmail.com 
-    GMAIL_PASS: lxjg aujr whey ghby 
+    TABLE_NAME: ${sls:stage}-t_notifications
+    GMAIL_USER: bibliokuna@gmail.com
+    GMAIL_PASS: lxjg aujr whey ghby
 
 functions:
   sendEmail:
-    handler: sendRegistration.handler 
+    handler: sendRegistration.handler
     events:
       - http:
-          path: /emails/registration 
-          method: post       
-          cors: true        
+          path: /emails/registration
+          method: post
+          cors: true
           integration: lambda
   sendSignUp:
     handler: sendSignUp.handler
@@ -29,6 +30,26 @@ functions:
           method: post
           cors: true
           integration: lambda
+
+resources:
+  Resources:
+    EmailsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH # Partition Key
+          - AttributeName: email
+            KeyType: RANGE # Sort Key
+        BillingMode: PAY_PER_REQUEST # On-demand billing
+        
+
 package:
   include:
     - sendRegistration.html # Include the HTML template in the deployment package
