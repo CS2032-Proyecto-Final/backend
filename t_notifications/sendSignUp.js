@@ -1,6 +1,10 @@
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
+const AWS = require('aws-sdk');
+
+// Configure DynamoDB
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
@@ -44,15 +48,34 @@ exports.handler = async (event) => {
         // Send email
         const info = await transporter.sendMail(mailOptions);
         console.log('Email sent:', info.response);
+
+        // Insert the notification into DynamoDB
+        const params = {
+            TableName: "EmailsTable", // DynamoDB table name
+            Item: {
+                tenant_id: "Bibliokuna",        // Static tenant_id, or replace with dynamic data
+                email: email,                  // Use recipient's email as the sort key
+                firstname: firstname,
+                lastname: lastname,
+                creationDate: creationDate,
+                full_name: full_name,
+                color: color,
+                sentAt: new Date().toISOString(), // Timestamp for the email sent
+            },
+        };
+
+        await dynamoDb.put(params).promise();
+        console.log('Notification saved to DynamoDB');
+
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: 'Signup email sent successfully!' }),
+            body: JSON.stringify({ message: 'Signup email sent and logged successfully!' }),
         };
     } catch (error) {
-        console.error('Error sending signup email:', error);
+        console.error('Error sending signup email or logging notification:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Failed to send signup email', error }),
+            body: JSON.stringify({ message: 'Failed to send signup email or log notification', error }),
         };
     }
 };
