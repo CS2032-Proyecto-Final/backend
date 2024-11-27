@@ -34,7 +34,11 @@ def lambda_handler(event, context):
     password = body['password']
     tenant_id = body['tenant_id']
 
-    api_url = f"https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev/libraries/info?tenant_id={tenant_id}"
+    libraries_url = os.environ.get("LIBRARIES_URL")
+    if not libraries_url:
+        raise Exception("LIBRARIES_URL environment variable not set")
+
+    api_url = f"{libraries_url}/libraries/info?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(api_url) as response:
         tenant_info = json.loads(response.read())
@@ -93,8 +97,12 @@ def lambda_handler(event, context):
         "color" : tenant_info["body"]["color"]["sidebar"]
     }
 
+    notifications_url = os.environ.get("NOTIFICATIONS_URL")
+    if not notifications_url:
+        raise Exception("NOTIFICATIONS_URL environment variable not set")
+
     # Email endpoint
-    email_endpoint = "https://epa4o89cfl.execute-api.us-east-1.amazonaws.com/dev/emails/signUp"
+    email_endpoint = f"{notifications_url}/emails/signUp"
 
     with ThreadPoolExecutor() as executor:
         executor.submit(send_email_async, email_payload, email_endpoint)

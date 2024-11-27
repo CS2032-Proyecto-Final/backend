@@ -21,11 +21,11 @@ def lambda_handler(event, context):
         'tenant_id': tenant_id,
         'isbn': isbn,
         'title': title,
-        'title_index': title.lower(),  # Version minúscula para búsqueda
+        'title_index': title.lower(),
         'author_name': author_name,
-        'author_name_index': author_name.lower(),  # Version minúscula para búsqueda
+        'author_name_index': author_name.lower(),
         'author_lastname': author_lastname,
-        'author_lastname_index': author_lastname.lower(),  # Version minúscula para búsqueda
+        'author_lastname_index': author_lastname.lower(),
         'quantity': quantity,
         'pages': pages,
         'stock': stock

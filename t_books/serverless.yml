@@ -10,6 +10,7 @@ provider:
     role: ${env:LAB_ROLE_ARN}
   environment:
     TABLE_NAME: ${sls:stage}-t_books
+    FAVORITES_URL: https://9vaeq95yoh.execute-api.us-east-1.amazonaws.com/${sls:stage}
 
 functions:
   createBook:
@@ -30,20 +31,20 @@ functions:
           cors: true
           integration: lambda
 
-  getBook:
-    handler: GetBook.lambda_handler
-    events:
-      - http:
-          path: /books/{isbn}
-          method: get
-          cors: true
-          integration: lambda
-
   searchBooks:
     handler: SearchBooks.lambda_handler
     events:
       - http:
           path: /books/search
+          method: get
+          cors: true
+          integration: lambda
+
+  getBooksByIsbns:
+    handler: GetBooksByIsbns.lambda_handler
+    events:
+      - http:
+          path: /books/details
           method: get
           cors: true
           integration: lambda
