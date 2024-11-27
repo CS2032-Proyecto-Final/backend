@@ -40,7 +40,7 @@ def lambda_handler(event, context):
 
     env_type = body['type']
     name = body['name']
-    hour = body['hour']
+    hour = str(body['hour']).zfill(2)
 
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
