@@ -11,7 +11,7 @@ provider:
   environment:
     USERS_TABLE_NAME: ${sls:stage}-t_users
     JWT_SECRET: ${env:JWT_SECRET}
-    LIBRARIES_URL: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/{sls:stage}
+    LIBRARIES_URL: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/${sls:stage}
 
 functions:
   RegisterUser:
