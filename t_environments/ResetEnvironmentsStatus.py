@@ -11,7 +11,7 @@ def lambda_handler(event, context):
     if not tenant_id:
         return {
             "statusCode": 400,
-            "body": json.dumps({"message": "tenant_id is required"})
+            "body": {"message": "tenant_id is required"}
         }
 
     # Configuración DynamoDB
@@ -40,5 +40,5 @@ def lambda_handler(event, context):
     # Respuesta
     return {
         "statusCode": 200,
-        "body": json.dumps({"message": "Environments status reset to available"})
+        "body": {"message": "Environments status reset to available"}
     }

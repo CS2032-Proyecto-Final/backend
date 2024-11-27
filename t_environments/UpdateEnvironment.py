@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     if not tenant_id or not env_type or not name or not hour or not new_status:
         return {
             "statusCode": 400,
-            "body": json.dumps({"message": "All parameters are required"})
+            "body": {"message": "All parameters are required"}
         }
 
     # Configuración DynamoDB
@@ -44,10 +44,10 @@ def lambda_handler(event, context):
         )
         return {
             "statusCode": 202,
-            "body": json.dumps({"message": "Environment status changed"})
+            "body": {"message": "Environment status changed"}
         }
     else:
         return {
             "statusCode": 406,
-            "body": json.dumps({"message": "Environment hour status: occupied"})
+            "body": {"message": "Environment hour status: occupied"}
         }
