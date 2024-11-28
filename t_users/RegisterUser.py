@@ -94,7 +94,8 @@ def lambda_handler(event, context):
         "lastname": lastname,
         "creationDate": creation_date,
         "full_name" : tenant_info["body"]["full_name"],
-        "color" : tenant_info["body"]["color"]["sidebar"]
+        "color" : tenant_info["body"]["color"]["sidebar"],
+        "tenant_id" : tenant_id
     }
 
     notifications_url = os.environ.get("NOTIFICATIONS_URL")
