@@ -1,10 +1,13 @@
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
-const AWS = require('aws-sdk');
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
+
 
 // Configure DynamoDB
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const client = new DynamoDBClient({});
+const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = process.env.TABLE_NAME;
 
 
@@ -66,8 +69,21 @@ exports.handler = async (event) => {
             },
         };
 
-        await dynamoDb.put(params).promise();
-        console.log('Notification saved to DynamoDB');
+        await dynamo.send(
+            new PutCommand({
+                TableName: tableName,
+                Item: {
+                    tenant_id: tenant_id,        // Static tenant_id, or replace with dynamic data
+                email: email,                  // Use recipient's email as the sort key
+                firstname: firstname,
+                lastname: lastname,
+                creationDate: creationDate,
+                full_name: full_name,
+                color: color,
+                sentAt: new Date().toISOString()
+                }
+            })
+        );
 
         return {
             statusCode: 200,
