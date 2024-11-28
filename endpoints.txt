@@ -12,3 +12,7 @@ CreateBook: POST - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/bo
 CreateBooks: POST - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/create/books
 SearchBooks: GET - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/search
 GetBooksByIsbns: POST - https://fenlnd1g0c.execute-api.us-east-1.amazonaws.com/dev/books/details
+
+[Favorites]
+
+https://8xpkki1r6a.execute-api.us-east-1.amazonaws.com
