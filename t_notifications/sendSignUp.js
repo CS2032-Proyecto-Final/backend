@@ -1,14 +1,19 @@
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
-const AWS = require('aws-sdk');
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
+
 
 // Configure DynamoDB
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const client = new DynamoDBClient({});
+const dynamo = DynamoDBDocumentClient.from(client);
+const tableName = process.env.TABLE_NAME;
+
 
 exports.handler = async (event) => {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { email, firstname, lastname, creationDate, full_name, color } = body;
+    const { email, firstname, lastname, creationDate, full_name, color, tenant_id } = body;
 
     // Get Gmail credentials from environment variables
     const gmailUser = process.env.GMAIL_USER;
@@ -51,9 +56,9 @@ exports.handler = async (event) => {
 
         // Insert the notification into DynamoDB
         const params = {
-            TableName: "EmailsTable", // DynamoDB table name
+            TableName: tableName, // DynamoDB table name
             Item: {
-                tenant_id: "Bibliokuna",        // Static tenant_id, or replace with dynamic data
+                tenant_id: tenant_id,        // Static tenant_id, or replace with dynamic data
                 email: email,                  // Use recipient's email as the sort key
                 firstname: firstname,
                 lastname: lastname,
@@ -64,8 +69,21 @@ exports.handler = async (event) => {
             },
         };
 
-        await dynamoDb.put(params).promise();
-        console.log('Notification saved to DynamoDB');
+        await dynamo.send(
+            new PutCommand({
+                TableName: tableName,
+                Item: {
+                    tenant_id: tenant_id,        // Static tenant_id, or replace with dynamic data
+                email: email,                  // Use recipient's email as the sort key
+                firstname: firstname,
+                lastname: lastname,
+                creationDate: creationDate,
+                full_name: full_name,
+                color: color,
+                sentAt: new Date().toISOString()
+                }
+            })
+        );
 
         return {
             statusCode: 200,
