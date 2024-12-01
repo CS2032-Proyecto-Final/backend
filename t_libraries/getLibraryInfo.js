@@ -42,6 +42,8 @@ exports.handler = async (event) => {
       };
     };
 
+    console.log("INFO: Fetching user data");
+    console.log("INFO: ", response);
     const tenant_id = response.body.tenant_id;
     const email = response.body.email;
 
