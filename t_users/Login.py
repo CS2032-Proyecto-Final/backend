@@ -31,15 +31,6 @@ def lambda_handler(event, context):
     password = body['password']
     tenant_id = body['tenant_id']
 
-    libraries_url = os.environ.get("LIBRARIES_URL")
-    if not libraries_url:
-        raise Exception("LIBRARIES_URL environment variable not set")
-
-    api_url = f"{libraries_url}/libraries/info?tenant_id={tenant_id}"
-
-    with urllib.request.urlopen(api_url) as response:
-        tenant_info = json.load(response)
-    
     hashed_password = hash_password(password)
     
     dynamodb = boto3.resource('dynamodb')
@@ -66,6 +57,17 @@ def lambda_handler(event, context):
         }
 
     token = generate_token(email, tenant_id)
+
+    libraries_url = os.environ.get("LIBRARIES_URL")
+    if not libraries_url:
+        raise Exception("LIBRARIES_URL environment variable not set")
+
+    api_url = f"{libraries_url}/libraries/info"
+
+    api_request = urllib.request.Request(api_url, headers={"Authorization": token})
+
+    with urllib.request.urlopen(api_request) as response:
+        tenant_info = json.load(response)
     
     return {
         'statusCode': 200,
