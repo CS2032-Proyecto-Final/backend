@@ -6,8 +6,6 @@ from boto3.dynamodb.conditions import Key
 
 def lambda_handler(event, context):
     # Obtener parámetros de entrada
-    tenant_id = event['query']['tenant_id']
-    email = event['query']['email']
     page = int(event['query']['page'])
     limit = int(event['query']['limit'])
     title = event['query'].get('title', '').lower()
@@ -26,6 +24,9 @@ def lambda_handler(event, context):
     
     if user_response.get('statusCode') == 403:
         return {"statusCode": 403, "body": {"message": "Token no válido"}}
+    
+    tenant_id = user_response['body']['tenant_id']
+    email = user_response['body']['email']
 
     # Conexión a DynamoDB para la tabla de libros
     dynamodb = boto3.resource('dynamodb')

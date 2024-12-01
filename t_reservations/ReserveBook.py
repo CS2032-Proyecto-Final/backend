@@ -43,13 +43,22 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
 
-    MB_url = f"{os.environ["BOOKS_URL"]}/books/search?tenant_id={tenant_id}&email={email}&page=1&limit=1&isbn={isbn}"
+    headers_data = {
+        "Authorization": token
+    }
+
+    MB_url = f"{os.environ["BOOKS_URL"]}/books/search?page=1&limit=1&isbn={isbn}"
+
     ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info?tenant_id={tenant_id}"
 
-    with urllib.request.urlopen(ML_url) as response:
+    MB_request = urllib.request.Request(MB_url, headers=headers_data)
+
+    ML_request = urllib.request.Request(ML_url, headers=headers_data)
+
+    with urllib.request.urlopen(ML_request) as response:
         tenant_info = json.loads(response.read())
 
-    with urllib.request.urlopen(MB_url) as response:
+    with urllib.request.urlopen(MB_request) as response:
         book_info = json.loads(response.read())
 
     type = "book"
