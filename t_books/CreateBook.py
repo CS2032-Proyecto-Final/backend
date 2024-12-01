@@ -6,6 +6,7 @@ import json
 def lambda_handler(event, context):
     
     # Entrada desde el evento
+    tenant_id = event['body']['tenant_id']
     isbn = event['body']['isbn']
     title = event['body']['title']
     author_name = event['body']['author_name']
@@ -13,21 +14,6 @@ def lambda_handler(event, context):
     quantity = event['body']['quantity']
     pages = event['body']['pages']
     stock = event['body']['stock']
-
-    # Validar token
-    token = event['headers']['Authorization']
-
-    data = json.dumps({"token": token}).encode('utf-8')
-
-    req = urllib.request.Request(f"{os.environ['USERS_URL']}/tokens/validate", data=data, method="POST", headers={"Content-Type": "application/json"})
-
-    user_response = json.loads(urllib.request.urlopen(req).read())
-    
-    if user_response.get('statusCode') == 403:
-        return {"statusCode": 403, "body": {"message": "Token no válido"}}
-    
-    tenant_id = user_response['body']['tenant_id']
-    email = user_response['body']['email']
     
     # Obtener el nombre de la tabla desde la variable de entorno
     nombre_tabla = os.environ["TABLE_NAME"]
