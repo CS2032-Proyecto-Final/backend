@@ -4,12 +4,50 @@ const { DynamoDBDocumentClient, UpdateCommand, GetCommand } = require("@aws-sdk/
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = process.env.FAVORITES_TABLE_NAME;
+const MU_url = process.env.USERS_URL;
+
+async function validateToken(token) {
+  if (!token) {
+    throw new Error("No se envió ningún token");
+  }
+
+  const token_data = { token };
+
+  //Validar token
+  const response = await fetch(MU_url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(token_data)
+  });
+
+  return await response.json();
+}
 
 exports.handler = async (event) => {
   try {
     // Parsear el cuerpo de la solicitud y extraer los datos
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { tenant_id, email, isbn } = body;
+    const { isbn } = body;
+
+    //Obtener token
+    const headers = typeof event.headers === "string" ? JSON.parse(event.headers) : event.headers;
+    const token = headers.Authorization;
+
+    response = await validateToken(token);
+
+    if(response.statusCode === 403) {
+      return {
+        statusCode: 403,
+        body: {
+          message: "Token no válido"
+        }
+      };
+    };
+
+    tenant_id = response.body.tenant_id;
+    email = response.body.email;
 
     // Construir la clave de partición y de ordenación
     const itemKey = `${email}#${isbn}`;

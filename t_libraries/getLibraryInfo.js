@@ -4,10 +4,46 @@ const { DynamoDBDocumentClient, GetCommand } = require("@aws-sdk/lib-dynamodb");
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = process.env.TABLE_NAME;
+const MU_url = process.env.USERS_URL;
+
+async function validateToken(token) {
+  if (!token) {
+    throw new Error("No se envió ningún token");
+  }
+
+  const token_data = { token };
+
+  //Validar token
+  const response = await fetch(MU_url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(token_data)
+  });
+
+  return await response.json();
+}
 
 exports.handler = async (event) => {
   try {
-    const tenant_id = event.query.tenant_id;
+    //Obtener token
+    const headers = typeof event.headers === "string" ? JSON.parse(event.headers) : event.headers;
+    const token = headers.Authorization;
+
+    response = await validateToken(token);
+
+    if(response.statusCode === 403) {
+      return {
+        statusCode: 403,
+        body: {
+          message: "Token no válido"
+        }
+      };
+    };
+
+    tenant_id = response.body.tenant_id;
+    email = response.body.email;
 
     const result = await dynamo.send(
       new GetCommand({

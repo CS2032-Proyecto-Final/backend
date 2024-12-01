@@ -10,6 +10,7 @@ provider:
     role: ${env:LAB_ROLE_ARN}
   environment:
     FAVORITES_TABLE_NAME: ${sls:stage}-t_favorites
+    USERS_URL: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/${sls:stage}
 
 functions:
   addOrUpdateFavorite:
