@@ -11,6 +11,7 @@ provider:
   environment:
     TABLE_NAME: ${sls:stage}-t_books
     FAVORITES_URL: https://8xpkki1r6a.execute-api.us-east-1.amazonaws.com/${sls:stage}
+    USERS_URL: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/${sls:stage}
 
 functions:
   createBook:
