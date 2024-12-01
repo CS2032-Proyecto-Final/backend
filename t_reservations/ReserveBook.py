@@ -55,6 +55,8 @@ def lambda_handler(event, context):
 
     with urllib.request.urlopen(MB_request) as response:
         book_info = json.loads(response.read())
+        print("INFO: ", "Se está enviando una request a " + MB_url)
+        print("INFO: ", book_info)
 
     type = "book"
     res_id = str(uuid.uuid4())
