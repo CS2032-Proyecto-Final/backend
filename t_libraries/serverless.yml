@@ -30,10 +30,6 @@ functions:
           method: get
           cors: true
           integration: lambda
-          request:
-            parameters:
-              querystrings:
-                tenant_id: true
 
   getAllLibraries:
     handler: getAllLibraries.handler
