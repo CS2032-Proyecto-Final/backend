@@ -51,11 +51,13 @@ def lambda_handler(event, context):
     }
 
     ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/info?&type={env_type}&env_name={name}&hour={formatted_hour}"
-    ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info?tenant_id={tenant_id}"
+    ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info"
 
     ME_request = urllib.request.Request(ME_url, headers=headers_data)
 
-    with urllib.request.urlopen(ML_url) as response:
+    ML_request = urllib.request.Request(ML_url, headers=headers_data)
+
+    with urllib.request.urlopen(ML_request) as response:
         tenant_info = json.loads(response.read())
 
     with urllib.request.urlopen(ME_request) as response:

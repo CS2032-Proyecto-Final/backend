@@ -44,7 +44,7 @@ def lambda_handler(event, context):
 
     MB_url = f"{os.environ["BOOKS_URL"]}/books/search?page=1&limit=1&isbn={isbn}"
 
-    ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info?tenant_id={tenant_id}"
+    ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info"
 
     MB_request = urllib.request.Request(MB_url, headers=headers_data)
 
