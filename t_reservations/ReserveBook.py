@@ -69,6 +69,28 @@ def lambda_handler(event, context):
             "message": "El libro a reservar no existe"
         }
     }
+
+    # Disminuir stock
+
+    MB_url = f"{os.environ["BOOKS_URL"]}/books/stock"
+
+    data_json = json.dumps({"isbn": isbn}).encode('utf-8')
+
+    MB_request2 = urllib.request.Request(MB_url, data=data_json, method="PATCH")
+
+    MB_request2.add_header("Content-Type", "application/json")
+
+    with urllib.request.urlopen(MB_request2) as response:
+        MB_stock_response = json.loads(response.read())
+
+    if(MB_stock_response['statusCode'] == 406):
+        return {
+            "statusCode": 406,
+            "body": {
+                "message": "No queda stock del libro"
+            }
+        }
+
     
     author_name = book_info['body']['books'][0]['author_name']
     author_lastname = book_info['body']['books'][0]['author_lastname']
