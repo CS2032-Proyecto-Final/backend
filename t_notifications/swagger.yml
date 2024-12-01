@@ -1,0 +1,151 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: Microservice Notifications API
+  description: API for managing book reservations and user signups with email notifications.
+
+servers:
+  - url: "https://api.bibliokuna.com/v1"
+    description: Production server
+
+paths:
+  /email/reservation:
+    post:
+      summary: Send a book reservation confirmation email
+      description: Sends a confirmation email to the user about their book reservation, including the title, pickup date, and maximum return date.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+                name:
+                  type: string
+                  example: "John Doe"
+                title:
+                  type: string
+                  example: "The Great Gatsby"
+                pickupDate:
+                  type: string
+                  example: "2024-12-02"
+                maxReturnDate:
+                  type: string
+                  example: "2024-12-16"
+      responses:
+        200:
+          description: Email sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Email sent successfully!"
+        500:
+          description: Failed to send email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Failed to send email"
+                  error:
+                    type: string
+                    example: "SMTP configuration error"
+
+  /email/signup:
+    post:
+      summary: Send a signup confirmation email
+      description: Sends a signup confirmation email to the user and logs the notification in DynamoDB.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+                firstname:
+                  type: string
+                  example: "John"
+                lastname:
+                  type: string
+                  example: "Doe"
+                creationDate:
+                  type: string
+                  example: "2024-12-01"
+                full_name:
+                  type: string
+                  example: "John Doe"
+                color:
+                  type: string
+                  example: "blue"
+                tenant_id:
+                  type: string
+                  example: "tenant123"
+      responses:
+        200:
+          description: Email sent and logged successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Signup email sent and logged successfully!"
+        500:
+          description: Failed to send email or log notification
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Failed to send signup email or log notification"
+                  error:
+                    type: string
+                    example: "DynamoDB write error"
+
+components:
+  schemas:
+    ReservationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        title:
+          type: string
+        pickupDate:
+          type: string
+        maxReturnDate:
+          type: string
+    SignupRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        creationDate:
+          type: string
+        full_name:
+          type: string
+        color:
+          type: string
+        tenant_id:
+          type: string
