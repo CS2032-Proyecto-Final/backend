@@ -30,11 +30,7 @@ functions:
           method: get
           cors: true
           integration: lambda
-          request:
-            parameters:
-              querystrings:
-                tenant_id: true
-                email: true
+
   getAllFavorites:
     handler: getAllFavorites.handler
     events:
@@ -43,11 +39,6 @@ functions:
           method: get
           cors: true
           integration: lambda
-          request:
-            parameters:
-              querystrings:
-                tenant_id: true
-                email: true
 
 resources:
   Resources:
