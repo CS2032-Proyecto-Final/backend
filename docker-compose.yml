@@ -61,3 +61,13 @@ services:
     volumes:
       - ./t_environments/swagger.yml:/app/swagger.yaml
 
+  swagger-notifications:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-notifications
+    ports:
+      - "8087:8080"
+    environment:
+      SWAGGER_JSON: /app/swagger.yaml
+    volumes:
+      - ./t_notifications/swagger.yml:/app/swagger.yaml
+
