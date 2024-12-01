@@ -9,16 +9,11 @@ def lambda_handler(event, context):
 
     body = event['body']
     
-    headers = event['headers']
-    token = headers['Authorization']
+    token = event['headers']['Authorization']
 
     MU_url = f"{os.environ["USERS_URL"]}/tokens/validate"
 
-    data = {
-        "token": token
-    }
-
-    data_json = json.dumps(data).encode('utf-8')
+    data_json = json.dumps({"token": token}).encode('utf-8')
 
     request = urllib.request.Request(MU_url, data=data_json, method="POST")
 
