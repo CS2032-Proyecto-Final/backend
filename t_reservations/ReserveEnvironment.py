@@ -85,7 +85,7 @@ def lambda_handler(event, context):
 
     # Cambiar el estado del env a unavailable
 
-    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/status?tenant_id={tenant_id}"
+    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/status"
 
     data = {
         "type": env_type,
