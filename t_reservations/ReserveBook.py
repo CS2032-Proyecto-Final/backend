@@ -76,7 +76,7 @@ def lambda_handler(event, context):
 
     data_json = json.dumps({"isbn": isbn}).encode('utf-8')
 
-    MB_request2 = urllib.request.Request(MB_url, data=data_json, method="PATCH")
+    MB_request2 = urllib.request.Request(MB_url, headers=headers_data, data=data_json, method="PATCH")
 
     MB_request2.add_header("Content-Type", "application/json")
 
