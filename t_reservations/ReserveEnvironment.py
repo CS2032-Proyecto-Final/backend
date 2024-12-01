@@ -46,13 +46,19 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ["RESERVATIONS_TABLE_NAME"])
 
-    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/info?tenant_id={tenant_id}&type={env_type}&env_name={name}&hour={formatted_hour}"
+    headers_data = {
+        "Authorization": token
+    }
+
+    ME_url = f"{os.environ["ENVIRONMENTS_URL"]}/environment/info?&type={env_type}&env_name={name}&hour={formatted_hour}"
     ML_url = f"{os.environ["LIBRARIES_URL"]}/libraries/info?tenant_id={tenant_id}"
+
+    ME_request = urllib.request.Request(ME_url, headers=headers_data)
 
     with urllib.request.urlopen(ML_url) as response:
         tenant_info = json.loads(response.read())
 
-    with urllib.request.urlopen(ME_url) as response:
+    with urllib.request.urlopen(ME_request) as response:
         env_info = json.loads(response.read())
 
     if env_info['statusCode'] == 404:
@@ -90,7 +96,7 @@ def lambda_handler(event, context):
 
     data_json = json.dumps(json.dumps(data)).encode('utf-8')
 
-    request = urllib.request.Request(ME_url, data=data_json, method="PATCH")
+    request = urllib.request.Request(ME_url, data=data_json, headers=headers_data, method="PATCH")
 
     request.add_header("Content-Type", "application/json")
 

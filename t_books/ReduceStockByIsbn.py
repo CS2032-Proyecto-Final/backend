@@ -1,10 +1,26 @@
 import boto3
 import os
+import urllib.request
+import json
 
 def lambda_handler(event, context):
     # Obtener parámetros de entrada
-    tenant_id = event['query']['tenant_id']
     isbn = event['body']['isbn']
+
+    # Validar token
+    token = event['headers']['Authorization']
+
+    data = json.dumps({"token": token}).encode('utf-8')
+
+    req = urllib.request.Request(f"{os.environ['USERS_URL']}/tokens/validate", data=data, method="POST", headers={"Content-Type": "application/json"})
+
+    user_response = json.loads(urllib.request.urlopen(req).read())
+    
+    if user_response.get('statusCode') == 403:
+        return {"statusCode": 403, "body": {"message": "Token no válido"}}
+    
+    tenant_id = user_response['body']['tenant_id']
+    email = user_response['body']['email']
 
     # Conexión a DynamoDB
     dynamodb = boto3.resource('dynamodb')
