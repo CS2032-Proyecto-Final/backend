@@ -4,7 +4,7 @@ const { DynamoDBDocumentClient, UpdateCommand, GetCommand } = require("@aws-sdk/
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = process.env.FAVORITES_TABLE_NAME;
-const MU_url = process.env.USERS_URL;
+const MU_url = `${process.env.USERS_URL}/tokens/validate`;
 
 async function validateToken(token) {
   if (!token) {
