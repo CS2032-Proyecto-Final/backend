@@ -31,7 +31,7 @@ exports.handler = async (event) => {
     const headers = typeof event.headers === "string" ? JSON.parse(event.headers) : event.headers;
     const token = headers.Authorization;
 
-    response = await validateToken(token);
+    const response = await validateToken(token);
 
     if(response.statusCode === 403) {
       return {
@@ -42,8 +42,8 @@ exports.handler = async (event) => {
       };
     };
 
-    tenant_id = response.body.tenant_id;
-    email = response.body.email;
+    const tenant_id = response.body.tenant_id;
+    const email = response.body.email;
 
     const result = await dynamo.send(
       new GetCommand({
