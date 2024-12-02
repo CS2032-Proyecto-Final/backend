@@ -42,8 +42,9 @@ def lambda_handler(event, context):
 
     # Intentar obtener los favoritos
     try:
-        api_url = f"{favorites_url}/favorite/my/actual?tenant_id={tenant_id}&email={email}"
-        with urllib.request.urlopen(api_url) as response:
+        api_url = f"{favorites_url}/favorite/my/actual"
+        api_request = urllib.request.Request(api_url, headers={"Authorization": token})
+        with urllib.request.urlopen(api_request) as response:
             favorites_data = json.load(response)
             # Asegúrate de acceder a la estructura correcta
             if "body" in favorites_data and isinstance(favorites_data["body"], list):
