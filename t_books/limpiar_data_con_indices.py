@@ -3,24 +3,31 @@ import json
 import random
 import re
 import os
+import unicodedata
 
 # Lista de tenants, se puede añadir más
 tenants = ["utec", "uni", "bnp"]
 
 # Tamaño máximo del archivo en bytes para el endpoint crear libros (4 MB), 4.json
-MAX_FILE_SIZE = 100 * 1024 * 1024
+MAX_FILE_SIZE = 4 * 1024 * 1024
+
+# Función para normalizar y limpiar texto (solo letras y números permitidos)
+def clean_text(text):
+    if not text:
+        return None
+    # Normalizar texto para eliminar caracteres acentuados y convertir a Unicode NFKD
+    normalized = unicodedata.normalize("NFKD", text)
+    # Filtrar solo letras, números y caracteres válidos (incluye Ñ y espacios)
+    return "".join(char for char in normalized if char.isalnum() or char.isspace() or char in "ñÑ").strip()
 
 # Función para extraer el primer nombre y apellido del autor
-# por temas prácticos solo toma el primer autor si es que hay más de uno
 def extract_author_names(author):
-    first_author = author.split(",")[0].strip() 
+    first_author = author.split(",")[0].strip()
     names = first_author.split()
     if len(names) > 1:
-        author_name = names[0]
-        author_lastname = " ".join(names[1:])
-        
+        author_name = clean_text(names[0])
+        author_lastname = clean_text(" ".join(names[1:]))
         author_lastname = re.split(r'\s*\(', author_lastname)[0].strip()
-        
         return author_name, author_lastname
     else:
         return None, None
@@ -40,43 +47,56 @@ def generate_location_code():
     return f"{letter}{number}" if number else letter
 
 # Función para crear un libro válido, si no hay ciertos campos se omite toda la fila
-# Campos obligatorios: isbn, title, author, coverImg(url del cover)
 def create_book(entry):
-    if not entry["isbn"] or entry["isbn"] == "9999999999999" or not entry["title"] or not entry["author"] or not entry["coverImg"]:
+    if (
+        not entry["isbn"]
+        or entry["isbn"] == "9999999999999"
+        or not entry["title"]
+        or not entry["author"]
+        or not entry["coverImg"]
+    ):
+        return None
+
+    # Limpiar y normalizar título
+    title = clean_text(entry["title"])
+    if not title:
         return None
 
     author_name, author_lastname = extract_author_names(entry["author"])
     if not author_name or not author_lastname:
         return None
-    
+
     tenant_id = random.choice(tenants)
-    
-    # Crea el diccionario del libro
+
+    # Crear el diccionario del libro
     book = {
         "tenant_id": tenant_id,
         "isbn": entry["isbn"],
-        "title": entry["title"],
+        "title": title,
+        "title_index": title.lower(),  # Índice en minúsculas
         "author_name": author_name,
+        "author_name_index": author_name.lower(),  # Índice en minúsculas
         "author_lastname": author_lastname,
+        "author_lastname_index": author_lastname.lower(),  # Índice en minúsculas
         "pages": clean_pages(entry["pages"]),
         "quantity": random.randint(3, 20),
         "stock": random.randint(1, 15),
         "cover_url": entry["coverImg"],
-        "description": entry["description"] if entry["description"] else "Descripción no disponible.",
-        "ubicacion": generate_location_code()  # Añadir el código de ubicación
+        "description": clean_text(entry["description"]) if entry["description"] else "Descripción no disponible.",
+        "ubicacion": generate_location_code(),  # Añadir el código de ubicación
     }
     return book
 
-# Lee el csv y llama a la función para crear los libros
+# Leer el CSV y llamar a la función para crear los libros
 books = []
-with open("data.csv", newline='', encoding='utf-8') as csvfile:
+with open("data.csv", newline="", encoding="utf-8") as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         book = create_book(row)
         if book:  # Solo añadimos el libro si todos los campos obligatorios están presentes
             books.append(book)
 
-# Dividir los libros en bloques de hasta 10 MB y guardarlos en archivos separados
+# Dividir los libros en bloques de hasta 4 MB y guardarlos en archivos separados
 file_count = 1
 current_batch = []
 current_size = 0
