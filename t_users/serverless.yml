@@ -1,6 +1,21 @@
 org: bibliokuna
 service: api-users
 
+custom:
+  URLS:
+    users:
+      dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+    libraries:
+      dev: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+    notifications:
+      dev: https://epa4o89cfl.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+
 provider:
   name: aws
   runtime: python3.12
@@ -11,8 +26,8 @@ provider:
   environment:
     USERS_TABLE_NAME: ${sls:stage}-t_users
     JWT_SECRET: ${env:JWT_SECRET}
-    LIBRARIES_URL: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/${sls:stage}
-    NOTIFICATIONS_URL: https://epa4o89cfl.execute-api.us-east-1.amazonaws.com/${sls:stage}
+    LIBRARIES_URL: ${self:custom.URLS.libraries.${sls:stage}}
+    NOTIFICATIONS_URL: ${self:custom.URLS.notifications.${sls:stage}}
 
 functions:
   RegisterUser:

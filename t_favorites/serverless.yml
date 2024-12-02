@@ -1,6 +1,13 @@
 org: bibliokuna
 service: api-favorites
 
+custom:
+  URLS:
+    users:
+      dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -10,7 +17,7 @@ provider:
     role: ${env:LAB_ROLE_ARN}
   environment:
     FAVORITES_TABLE_NAME: ${sls:stage}-t_favorites
-    USERS_URL: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/${sls:stage}
+    USERS_URL: ${self:custom.URLS.users.${sls:stage}}
 
 functions:
   addOrUpdateFavorite:

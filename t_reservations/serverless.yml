@@ -1,6 +1,25 @@
 org: bibliokuna
 service: api-reservations
 
+custom:
+  URLS:
+    users:
+      dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+    books:
+      dev: https://5hwmwqefva.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+    libraries:
+      dev: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+    environments:
+      dev: https://txiblm2q60.execute-api.us-east-1.amazonaws.com/dev
+      test:
+      prod:
+
 provider:
   name: aws
   runtime: python3.12
@@ -10,11 +29,10 @@ provider:
     role: ${env:LAB_ROLE_ARN}
   environment:
     RESERVATIONS_TABLE_NAME: ${sls:stage}-t_reservations
-    USERS_URL: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/${sls:stage}
-    BOOKS_URL: https://5hwmwqefva.execute-api.us-east-1.amazonaws.com/${sls:stage}
-    LIBRARIES_URL: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/${sls:stage}
-    ENVIRONMENTS_URL: https://txiblm2q60.execute-api.us-east-1.amazonaws.com/${sls:stage}
-
+    USERS_URL: ${self:custom.URLS.users.${sls:stage}}
+    BOOKS_URL: ${self:custom.URLS.books.${sls:stage}}
+    LIBRARIES_URL: ${self:custom.URLS.libraries.${sls:stage}}
+    ENVIRONMENTS_URL: ${self:custom.URLS.environments.${sls:stage}}
 
 functions:
   GetBookReservations:
