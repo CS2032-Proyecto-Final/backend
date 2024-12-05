@@ -5,8 +5,8 @@ custom:
   URLS:
     users:
       dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
+      test: https://
+      prod: https://
 
 provider:
   name: aws
