@@ -8,7 +8,7 @@
  "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/utec-logo.jpg",
  "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/utec-background.jpg",
  "reserv_book_time": 4,
- "reserv_env_time": 2,
+ "reserv_env_time": 1,
  "email_suffix": "utec.edu.pe",
  "env_types": ["computadoras", "salas_de_estudio"],
  "full_name": "Universidad de Ingenieria y Tecnologia"
@@ -31,6 +31,22 @@
 }
 
 {
+ "tenant_id": "bnp",
+ "color": {
+  "background": "#005BAC",  
+  "content": "#FFFFFF",    
+  "sidebar": "#003A70"   
+ },
+ "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/bnp-logo.png",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/bnp-background.jpg",
+ "reserv_book_time": 3,
+ "reserv_env_time": 1,
+ "email_suffix": "*",
+ "env_types": ["computadoras", "salas_de_estudio", "salas_de_talleres"],
+ "full_name": "Biblioteca Nacional del Peru"
+}
+
+{
  "tenant_id": "upn",
  "color": {
   "background": "#d3d3d3",         
@@ -40,7 +56,7 @@
  "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/upn-logo.png",
  "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/upn-background.jpg",
  "reserv_book_time": 3,
- "reserv_env_time": 2,
+ "reserv_env_time": 1,
  "email_suffix": "upn.edu.pe",
  "env_types": ["computadoras"],
  "full_name": "Universidad Privada del Norte"
@@ -56,8 +72,24 @@
  "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/unmsm-logo.png",
  "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/unmsm-background.png",
  "reserv_book_time": 2,
- "reserv_env_time": 2,
+ "reserv_env_time": 1,
  "email_suffix": "unmsm.edu.pe",
  "env_types": ["computadoras", "salas_de_estudio", "salas_de_talleres"],
  "full_name": "Universidad Nacional Mayor de San Marcos"
+}
+
+{
+ "tenant_id": "upao",
+ "color": {
+  "background": "#FF6F00",  
+  "content": "#FFFFFF",    
+  "sidebar": "#FF4500"   
+ },
+ "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/upao-logo.jpg",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/upao-background.jpg",
+ "reserv_book_time": 3,
+ "reserv_env_time": 1,
+ "email_suffix": "upao.edu.pe",
+ "env_types": ["computadoras", "salas_de_estudio", "salas_de_talleres"],
+ "full_name": "Universidad Privada Antenor Orrego"
 }
