@@ -38,7 +38,7 @@
   "sidebar": "#ffd966" 
  },
  "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/upn-logo.png",
- "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/upn-background.jpeg",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/upn-background.jpg",
  "reserv_book_time": 3,
  "reserv_env_time": 2,
  "email_suffix": "upn.edu.pe",
@@ -54,7 +54,7 @@
   "sidebar": "#800040"   
  },
  "logo_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/logos/unmsm-logo.png",
- "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/unmsm-background.jpg",
+ "background_url": "https://bibliokuna-data.s3.us-east-1.amazonaws.com/backgrounds/unmsm-background.png",
  "reserv_book_time": 2,
  "reserv_env_time": 2,
  "email_suffix": "unmsm.edu.pe",
