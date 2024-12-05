@@ -3,14 +3,10 @@ service: api-users
 
 custom:
   URLS:
-    users:
-      dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
     libraries:
-      dev: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
+      dev: https://2333ibrncl.execute-api.us-east-1.amazonaws.com/dev     
+      test: https://78v835l8h4.execute-api.us-east-1.amazonaws.com/test
+      prod: https://836c1esai1.execute-api.us-east-1.amazonaws.com/prod
     notifications:
       dev: https://epa4o89cfl.execute-api.us-east-1.amazonaws.com/dev
       test:
