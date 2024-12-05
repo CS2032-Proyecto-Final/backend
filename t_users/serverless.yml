@@ -8,9 +8,10 @@ custom:
       test: https://78v835l8h4.execute-api.us-east-1.amazonaws.com/test
       prod: https://836c1esai1.execute-api.us-east-1.amazonaws.com/prod
     notifications:
-      dev: https://epa4o89cfl.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
+      dev: https://n92gl74i61.execute-api.us-east-1.amazonaws.com/dev
+      test: https://68y1v0p0a4.execute-api.us-east-1.amazonaws.com/test
+      prod: https://azuf1xu26j.execute-api.us-east-1.amazonaws.com/prod
+
 
 provider:
   name: aws
