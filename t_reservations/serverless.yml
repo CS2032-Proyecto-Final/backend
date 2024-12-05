@@ -4,21 +4,21 @@ service: api-reservations
 custom:
   URLS:
     users:
-      dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
+      dev: https://39huieajj1.execute-api.us-east-1.amazonaws.com/dev
+      test: https://6w6n4rcfl7.execute-api.us-east-1.amazonaws.com/test
+      prod: https://jidj42yv4h.execute-api.us-east-1.amazonaws.com/prod
     books:
-      dev: https://5hwmwqefva.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
+      dev: https://vtmz9bppzb.execute-api.us-east-1.amazonaws.com/dev
+      test: https://ka0lzpltya.execute-api.us-east-1.amazonaws.com/test
+      prod: https://2t3xvsitr4.execute-api.us-east-1.amazonaws.com/prod
     libraries:
-      dev: https://95tbi6q50h.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
+      dev: https://2333ibrncl.execute-api.us-east-1.amazonaws.com/dev     
+      test: https://78v835l8h4.execute-api.us-east-1.amazonaws.com/test
+      prod: https://836c1esai1.execute-api.us-east-1.amazonaws.com/prod
     environments:
-      dev: https://txiblm2q60.execute-api.us-east-1.amazonaws.com/dev
-      test:
-      prod:
+      dev: https://lsxyzj9yxe.execute-api.us-east-1.amazonaws.com/dev
+      test: https://p926quyct1.execute-api.us-east-1.amazonaws.com/test
+      prod: https://odal3bx0kc.execute-api.us-east-1.amazonaws.com/prod
 
 provider:
   name: aws
