@@ -4,9 +4,9 @@ service: api-environments
 custom:
   URLS:
     users:
-      dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
-      test: https://
-      prod: https://
+      dev: https://39huieajj1.execute-api.us-east-1.amazonaws.com/dev
+      test: https://6w6n4rcfl7.execute-api.us-east-1.amazonaws.com/test
+      prod: https://jidj42yv4h.execute-api.us-east-1.amazonaws.com/prod
 
 provider:
   name: aws
