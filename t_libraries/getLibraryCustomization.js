@@ -23,10 +23,10 @@ exports.handler = async (event) => {
       };
     }
 
-    const { color, logo_url, background_url } = result.Item;
+    const { color, logo_url, background_url, email_suffix } = result.Item;
     return {
       statusCode: 200,
-      body: { color, logo_url, background_url }
+      body: { color, logo_url, background_url, email_suffix }
     };
 
   } catch (error) {
