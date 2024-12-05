@@ -5,12 +5,12 @@ custom:
   URLS:
     users:
       dev: https://yqyomo3gcf.execute-api.us-east-1.amazonaws.com/dev
-      test: 
-      prod: 
+      test: https:// 
+      prod: https:// 
     favorites:
       dev: https://8xpkki1r6a.execute-api.us-east-1.amazonaws.com/${sls:stage}
-      test: 
-      prod: 
+      test: https://
+      prod: https://
 
 provider:
   name: aws
