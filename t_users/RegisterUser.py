@@ -38,7 +38,7 @@ def lambda_handler(event, context):
     if not libraries_url:
         raise Exception("LIBRARIES_URL environment variable not set")
 
-    api_url = f"{libraries_url}/libraries/info?tenant_id={tenant_id}"
+    api_url = f"{libraries_url}/libraries/customization?tenant_id={tenant_id}"
 
     with urllib.request.urlopen(api_url) as response:
         tenant_info = json.loads(response.read())
